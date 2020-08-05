@@ -54,6 +54,12 @@
         margin-bottom: 0;
     }
 </style>
+
+<!--自增序列号-->
+<script type="text/html" id="xuhao">
+    {{ d.LAY_TABLE_INDEX + 1 }}
+</script>
+
 <script type="text/html" id="tpl_tool">
     <span class="cz-box"><a href="javascript:void(0)" class="layui-btn btn-noraml" lay-event="del">删除</a><a
             class="layui-btn btn-danger mr0" lay-href="address/id={{d.id}}">编辑</a></span>
@@ -81,9 +87,9 @@
             cols: [
                 [{
                     title: '序号',
-                    field: 'id',
                     width: 100,
-                    align: 'center'
+                    align: 'center',
+                    templet: '#xuhao'
                 }, {
                     field: 'name',
                     title: '收件人',
