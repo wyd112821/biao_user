@@ -1,0 +1,275 @@
+<title>站内消息</title>
+<div class="layadmin-pagetabs">
+	<strong class="on">
+		<a href="">个人中心</a>
+		<i class="iconfont iconico_leftnav_down_sel1"></i>
+		<a href="">账户管理</a>
+		<i class="iconfont iconico_leftnav_down_sel1"></i>
+		<a href="javascript:;">站内信</a>
+	</strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+	<div class="layui-card">
+		<div class="layui-tab-content layui-card">
+			<div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+				<ul class="layui-tab-title">
+					<li class="layui-this"><a>站内信</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="layui-card-body" style="padding: 0 32px">
+				<blockquote class="layui-elem-quote shuoming"><i class="iconfont icontixing"></i>短消息是本站系统给您发送的提醒消息，请务必阅读，如重要提醒由于自身未阅读原因导致后果自负。</blockquote>
+				<div class="layui-btn-container layui-table-cz layui-search-table">
+					<div class="layui-inline" id="del">
+						<button class="layui-btn btn-disable del-all">删除</button>
+					</div>
+					<div class="layui-inline xiaoxit">
+						<span zt="">全部</span>
+						<span zt='1'>已读</span>
+						<span zt='2'>未读</span>
+					</div>
+					<div class="layui-inline delete-s fr">
+						<a class="del-yd" href="javascript:void(0)" zt='1'>删除所有已读消息</a><a class="del-wd" href="javascript:void(0)" zt='2'>删除所有未读消息</a>
+					</div>
+				</div>
+				<table class="layui-hide" id="xiaoxi" lay-filter="xiaoxi"></table>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use(['table','x'], function () {
+		var table = layui.table;
+		var layer = layui.layer
+		var $ = layui.jquery;
+		var x = layui.x;
+		tableShow();
+		function collapseTable(options) {
+			var trObj = options.elem
+			if (!trObj) return
+			var accordion = options.accordion,
+				success = options.success,
+				content = options.content || '';
+			var tableView = trObj.parents('.layui-table-view'); //当前表格视图
+			var id = tableView.attr('lay-id'); //当前表格标识
+			var index = trObj.data('index'); //当前行索引
+			var leftTr = tableView.find('.layui-table-fixed.layui-table-fixed-l tr[data-index="' + index +'"]'); //左侧当前固定行
+			var rightTr = tableView.find('.layui-table-fixed.layui-table-fixed-r tr[data-index="' + index +'"]'); //右侧当前固定行
+			var colspan = trObj.find('td').length; //获取合并长度
+			var trObjChildren = trObj.next(); //展开行Dom
+			var indexChildren = id + '-' + index + '-children'; //展开行索引
+			var leftTrChildren = tableView.find('.layui-table-fixed.layui-table-fixed-l tr[data-index="' +indexChildren + '"]'); //左侧展开固定行
+			var rightTrChildren = tableView.find('.layui-table-fixed.layui-table-fixed-r tr[data-index="' +indexChildren + '"]'); //右侧展开固定行
+			var lw = leftTr.width() + 15; //左宽
+			var rw = rightTr.width() + 15; //右宽
+			//不存在就创建展开行
+			if (trObjChildren.data('index') != indexChildren) {
+				//装载HTMLUSD素
+				var tr = '<tr class="coll-tr" data-index="' + indexChildren + '"><td colspan="' + colspan +'"><div style="height: auto;padding:' + lw + 'px;overflow: hidden" class="layui-table-cell">' + content + '</div></td></tr>';
+				trObjChildren = trObj.after(tr).next().hide(); //隐藏展开行
+				var fixTr = '<tr data-index="' + indexChildren + '"></tr>'; //固定行
+				leftTrChildren = leftTr.after(fixTr).next().hide(); //左固定
+				rightTrChildren = rightTr.after(fixTr).next().hide(); //右固定
+			}
+			trObj.find('td[lay-event="collapse"] i.layui-colla-icon').toggleClass('layui-icon-right layui-icon-up');//展开|折叠箭头图标
+			trObjChildren.toggle();//显示|隐藏展开行
+			//开启手风琴折叠和折叠箭头
+			if (accordion) {
+				trObj.siblings().find('td[lay-event="collapse"] i.layui-colla-icon').removeClass('layui-icon-up').addClass('layui-icon-down');
+				trObjChildren.siblings('[data-index$="-children"]').hide(); //展开
+				rightTrChildren.siblings('[data-index$="-children"]').hide(); //左固定
+				leftTrChildren.siblings('[data-index$="-children"]').hide(); //右固定
+			}
+			success(trObjChildren, indexChildren); //回调函数
+			heightChildren = trObjChildren.height(); //展开高度固定
+			rightTrChildren.height(heightChildren + 115).toggle(); //左固定
+			leftTrChildren.height(heightChildren + 115).toggle(); //右固定
+		}
+
+		function tableShow(zt){
+			table.render({
+				elem: '#xiaoxi',
+				url: './u/json/xiaoxi.json',
+                response: {statusCode: 1},
+                method: 'get',
+				limit: 10,
+				page: true,
+				where: {
+					zt: zt
+				},
+				cols: [
+					[{
+						type: 'checkbox',
+						width: 64
+					}, {
+						field: 'lx',
+						title: '类型',
+						width:120
+					}, {
+						field: 'bt',
+						title: '内容',
+						event: 'collapse',
+						templet: function(d) {
+                            if (d.zt == 0) {
+								return '<div style="position: relative;padding: 0 20px 0 0px;text-align: left"><span class="xiaoxi-i tz">通知</span><span class="inThis text-danger">' + d.bt +
+									'</span><i style="left: auto;right:-14px;color:#E8001C" lay-tips="展开" class="layui-icon layui-colla-icon layui-icon-down"></i></div>'
+							} else {
+								return '<div style="position: relative;padding: 0 20px 0  0px;text-align: left"><span class="xiaoxi-i db">代办</span><span class="inThis" style="color:#999">' + d.bt +
+									'</span><i style="left: auto;right:-14px;color: #999;" lay-tips="展开" class="layui-icon layui-colla-icon layui-icon-down"></i></div>'
+							}
+						}
+					}, {
+						field: 'sj',
+						title: '时间'
+					}, {
+						title: '操作',
+						templet: function(d) {
+							return '<span class="cz-box"><a class="layui-btn btn-noraml" lay-event="del">删除</a></span>'
+						}
+					}]
+				],
+				done: function(res) {
+					$('.layui-table tbody tr:odd').addClass('tr_odd');
+					$('.layui-table tbody tr:even').addClass('tr_even');
+				}
+			});
+		}
+		
+		table.on('checkbox(xiaoxi)', function (obj) {
+			var xz = table.checkStatus('xiaoxi');
+			if(xz.data.length>0){
+				$(".del-all").removeClass("btn-disable").addClass("btn-common");
+			}
+			else{
+				$(".del-all").addClass("btn-disable").removeClass("btn-common");
+			}
+			if(obj.checked){
+                $(obj.tr).find(".inThis").css('color','#208FFC')
+            } else {
+                $(obj.tr).find(".inThis").css('color','#999')
+            }
+
+        });
+
+		//删除选中
+		$(".del-all").click(function () {
+			var ids=layui.x.arr_lie(table.checkStatus('xiaoxi').data,'id');
+			if(ids.length == 0){
+				return;
+			}
+			layer.confirm('<font color=red>确定删除已选中的消息吗？</font>', {
+				title: "温馨提示",
+				icon: 3,  yes: function (index, layero) {
+					layer.close(index);
+					layui.admin.req({
+						url: '/user_zh/del_xiaoxi',
+						type: 'post',
+						dataType: 'json',
+						data: { ids: ids},
+						success: function (res) {
+							layer.close(index);
+							if (res.code == 1) {
+								layer.msg(res.msg, {time: 1000});
+								$(".del-all").addClass("btn-common").removeClass("btn-common");
+								table.reload('xiaoxi');
+							}
+							else if(res.code==-1) {
+								layer.alert(res.msg,layui.x.layset())
+							}
+						}
+					});
+				}
+			});
+		});
+
+		//状态筛选
+		$(".xiaoxit span").click(function () {
+			$(".xiaoxit span").removeClass("on");
+			$(this).addClass("on");
+			tableShow($(this).attr('zt'));
+		});
+		
+		//删除指定状态  0未读	1已读
+		$('.del-wd,.del-yd').click(function () {
+			var zt=$(this).attr('zt');
+			layer.confirm(
+				'<font color=red>您确定要删除所有'+(zt==0 ? '未读':'已读')+'消息吗？</font>', 
+				{title: "温馨提示",icon: 3,  yes: function () {
+					layui.admin.req({
+						url: '/user_zh/dels_xiaoxi',
+						type: 'post',
+						dataType: 'json',
+						data: {zt: zt},
+						success: function (res) {
+							layer.msg(res.msg, {time: 1000});
+							if (res.code === 1) {
+								table.reload('xiaoxi');
+							}
+							else if (res.code ==-1) {
+								layer.alert(res.msg,layui.x.layset())
+							}
+						}
+					})
+					layer.closeAll()
+				}
+			});
+
+		});
+		
+		//监听行工具事件
+		table.on('tool(xiaoxi)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				layer.confirm('<font color=red>确定删除该条消息吗</font>',{title: "温馨提示",icon: 3}, function (index) {
+					layui.admin.req({
+						type: 'POST',
+						url: '/user_zh/del_xiaoxi',
+						data: {
+							ids: data.id
+						},
+						success: function (res) {
+							layer.close(index);
+							if (res.code == 1) {
+								obj.del();
+								layer.msg(res.msg, {time: 1000});
+							}
+							else if(res.code==-1) {
+								layer.alert(res.msg,layui.x.layset())
+							}
+						}
+					});
+					layer.close(index);
+				});
+			}
+			else if (obj.event == 'collapse') {
+                var trObj = layui.$(this).parent('tr'); //当前行
+				var accordion = true; //开启手风琴，那么在进行折叠操作时，始终只会展现当前展开的表格。
+				var content = '<span class="collapse_content"></span>'; //内容
+				//表格行折叠方法
+				collapseTable({
+					elem: trObj,
+					accordion: accordion,
+					content: content,
+					success: function (trObjChildren, index) { //成功回调函数
+						trObjChildren.find('span').attr('id', index)
+						$('#' + index).html(data.nr)
+                        layui.admin.req({
+                            url: '/user_zh/du_xiaoxi',
+                            type: 'post',
+                            dataType: 'json',
+                            data: { ids: data.id},
+                            success: function (res) {
+                                if (res.code == 1) {
+                                    $(obj.tr).find(".inThis").removeClass('text-danger').css("color",'#999')
+                                }
+                                else if(res.code==-1) {
+                                    layer.alert(res.msg,layui.x.layset())
+                                }
+                            }
+                        });
+					}
+				})
+			}
+		});
+	});
+</script>

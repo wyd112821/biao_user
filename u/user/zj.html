@@ -1,0 +1,209 @@
+<title>资金明细</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">财务中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">资金明细</a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-href="zj"><a>资金明细</a></li>
+                </ul>
+            </div>
+        </div>
+        <script template lay-url="./u/json/zjxm.json" type="text/html"
+            lay-done="layui.x.sortSelect([{id: 'lx',title: '类型',param: 'lx',list: d.data.lx}, {id: 'zu',title: '分组',param: 'zu',list: d.data.zu}]);">
+            <div class="zjmx-body">
+                <div class="layui-card-je zjmx">
+                    <div class="zjmx-top">
+                        您在本站共消费：<span>2323</span> 元，共充值：<span>121</span>元
+                    </div>
+                    <div class="zjmx-bottom">
+                        <div class="fl" style="width: 240px;border: 0;">
+                            <strong>12122</strong><span>元</span>
+                            <p>资金余额</p>
+                        </div>
+                        <div class="fl djje" style="width: 240px;">
+                            <strong>212212</strong><span>元</span>
+                            <p>&nbsp;冻结金额</p>
+                        </div>
+                        <div class="fl kyye" style="width: 240px;">
+                            <strong style="color: #E8001C">12121</strong><span>元</span>
+                            <p>&nbsp;可用余额</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <div class="layui-card-body pt0">
+            <div class="layui-btn-container layui-table-cz layui-search-table borderG layui-clear layui-inline-fl">
+                <div class="layui-inline search-box">
+                    <input placeholder="请输入域名/关键词/订单号" title="请输入你要查询的订单号或者域名.[需要精确查询]"
+                        class="layui-textarea layui-input search">
+                    <i class="iconfont iconsousuo1" id="zj-search"></i>
+                </div>
+                <div class="layui-inline shijian">
+                    <input type="text" placeholder="请输入你要查询的时间" id="dqsj1" class="layui-input">
+                    <i class="iconfont iconriqi"></i>
+                </div>
+                <div class="layui-inline">
+                    <button type="button" class="layui-btn btn-common fl" id="search">查询</button>
+                </div>
+                <div class="layui-inline mr0 fl">
+                    <button class="layui-btn btn-common daochu mr0 fr">导出</button>
+                </div>
+            </div>
+            <table class="layui-hide" id="list" lay-filter="list"></table>
+        </div>
+    </div>
+</div>
+<style>
+    .layui-table-view {
+        border: 1px #E5E5E5 solid !important;
+        box-shadow: none;
+    }
+
+    .layui-table-page {
+        margin-bottom: 0;
+    }
+</style>
+<script>
+    layui.use(['table', 'form', 'laydate', 'x', 'laytpl'], function () {
+        var x = layui.x;
+        var table = layui.table,
+            $ = layui.jquery,
+            laydate = layui.laydate,
+            form = layui.form,
+            url = '/user_zh/get_zjmx_list',
+            laytpl = layui.laytpl;
+        // x.textareaFocus(244);
+        laydate.render({
+            elem: '#dqsj1',
+            range: '到',
+            max: 0,
+            theme: 'jm-date',
+            kj: 1,
+            done: function (v) {
+                where.sj = v.replace(" 到 ", "_");
+            }
+        });
+        table.render({
+            elem: '#list',
+            url: './u/json/zj.json',
+            defaultToolbar: ['', '', ''],
+            response: {
+                statusCode: 1
+            },
+            page: true,
+            limit: 10,
+            cols: [
+                [{
+                        field: 'id',
+                        title: '订单号',
+                        width: '8%',
+                        templet: function (d) {
+                            return "<span style='color: #888'>" + d.id + "</span>"
+                        }
+                    },
+                    {
+                        field: 'lxstr',
+                        width: '6%',
+                        title: '<span class=\'sx lx\' data-id=\'lx\'>类型</span>',
+                        templet: function (d) {
+                            return "<span class='zjlx_" + d.lx + "'>" + d.lxstr + "</span>"
+                        }
+                    },
+                    {
+                        field: 'zustr',
+                        width: '10%',
+                        title: '<span class=\'sx zu\' data-id=\'zu\'>项目</span>',
+                        event: 'zu',
+                        templet: function (d) {
+                            return "<span class='text-normal'>" + d.zustr + "</span>"
+                        }
+                    },
+                    {
+                        field: 'sm',
+                        width: '34%',
+                        title: '说明'
+                    },
+                    {
+                        field: 'qian',
+                        title: '变动'
+                    },
+                    {
+                        field: 'zqian',
+                        title: '剩余'
+                    },
+                    {
+                        field: 'sj',
+                        width: 200,
+                        title: '时间'
+                    }
+                ]
+            ],
+            done: function (d) {
+                if (d.data.length > 0 && $("#add_tool").length == 0) {
+                    var addhtml = add.innerHTML;
+                    laytpl(addhtml).render({}, function (html) {
+                        $(".layui-table-page > div").prepend(html)
+                    });
+                }
+            }
+        });
+
+        $(".search-time span").click(function () {
+            var time = $(this).attr("data-time");
+            $(".search-time span").removeClass("on");
+            $(this).addClass("on");
+            $("#dqsj1").val(x.serlizeTimeBefore(new Date().getTime() - time * 24 * 60 * 60 * 1000) +
+                " 到 " + x.serlizeTimeBefore(new Date().getTime()));
+            $("#search").click();
+        });
+
+        var where = {};
+
+        table.on('tool(list)', function (obj) {
+            var data = obj.data;
+            console.log("#" + obj.event + ' .layui-nav-child dd[data-value="' + data.zu + '"]');
+            if (obj.event === 'zu') {
+                $("#" + obj.event + ' .layui-nav-child dd[data-value="' + data.zu + '"]').click();
+            }
+        });
+
+        //搜索
+        $("#search").click(function () {
+            where.kw = $(".search").val();
+            where.sj = $("#dqsj1").val().replace(" 到 ", "_");
+            table.reload('list', {
+                where: where,
+                page: {
+                    curr: 1
+                }
+            });
+        });
+        $("#zj-search").click(function () {
+            where.kw = $(".search").val();
+            where.sj = "";
+            table.reload('list', {
+                where: where,
+                page: {
+                    curr: 1
+                }
+            });
+        });
+
+        $(".layui-card-body").on("click", '#daochu', function () {
+            var req = $.param(where, true);
+            $("#down").attr('href', url + "?dc=1&" + req);
+            $("#down")[0].click();
+        })
+    });
+</script>
+<a href="#" target="_blank" class="hide" id="down"></a>

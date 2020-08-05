@@ -1,0 +1,157 @@
+<title>邮寄地址</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">账户管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">邮寄地址</a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-href="address_list"><a>地址管理</a></li>
+                    <li lay-href="address"><a>添加新地址</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-btn-container layui-search-table borderG layui-clear layui-inline-fl">
+                <div class="layui-inline search-sorts-inline">
+                    <input type="text" name="keyword" placeholder="请输入收件人、手机号、地址等" class="layui-input search">
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn btn-danger fl" id="search">搜索</button>
+                </div>
+            </div>
+            <table class="layui-hide" id="list" lay-filter="list"></table>
+        </div>
+    </div>
+</div>
+<style>
+    .mbzt_0,
+    .mbzt_3 {
+        color: gray;
+    }
+
+    .mbzt_1 {
+        color: #009207;
+    }
+
+    .mbzt_2 {
+        color: red;
+    }
+
+    .layui-table-view {
+        border: 1px #F2F2F2 solid !important;
+        box-shadow: none;
+    }
+
+    .layui-table-page {
+        margin-bottom: 0;
+    }
+</style>
+<script type="text/html" id="tpl_tool">
+    <span class="cz-box"><a href="javascript:void(0)" class="layui-btn btn-noraml" lay-event="del">删除</a><a
+            class="layui-btn btn-danger mr0" lay-href="address/id={{d.id}}">编辑</a></span>
+</script>
+
+<script>
+    layui.use(['table', 'x', 'laytpl', 'form'], function () {
+        var table = layui.table,
+            $ = layui.jquery,
+            x = layui.x,
+            form = layui.form,
+            where = {},
+            ask = {
+                icon: 3,
+                area: '400px',
+                skin: 'jm-class',
+                shadeClose: 1
+            };
+
+        table.render({
+            elem: '#list',
+            url: 'http://118.89.249.100/api/address/index',
+            page: true,
+            limit: 10,
+            cols: [
+                [{
+                    title: '序号',
+                    field: 'id',
+                    width: 100,
+                    align: 'center'
+                }, {
+                    field: 'name',
+                    title: '收件人',
+                    width: 160,
+                    align: 'center'
+                }, {
+                    field: 'phone',
+                    title: '手机号',
+                    width: 160,
+                    align: 'center'
+                }, {
+                    field: 'ssq_name',
+                    title: '省/市/区县'
+                }, {
+                    field: 'addr',
+                    title: '详细地址'
+                }, {
+                    title: '操作',
+                    toolbar: '#tpl_tool',
+                    width: 240
+                }]
+            ],
+            parseData: function (res) {
+                return {
+                    "code": res.code > 0 ? 0 : -1,
+                    "msg": res.msg,
+                    "count": res.count,
+                    "data": res.data
+                };
+            }
+        });
+        // 搜索
+        $("#search").click(function () {
+            where.keyword = $(".search").val();
+            table.reload('list', {
+                where: where,
+                page: {
+                    curr: 1
+                }
+            });
+        });
+        //监听行工具事件
+        table.on('tool(list)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('<font color=red>真的删除该地址吗?</font>', ask, function (index) {
+                    layui.admin.req({
+                        type: 'GET',
+                        url: 'http://118.89.249.100/api/address/del',
+                        data: {
+                            id: data.id
+                        },
+                        success: function (res) {
+                            layer.close(index);
+                            if (res.code == 1) {
+                                obj.del();
+                                layer.msg(res.msg, {
+                                    time: 1000
+                                });
+                            } else {
+                                layer.alert(res.msg, layui.x.layset())
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+        form.render();
+    });
+</script>

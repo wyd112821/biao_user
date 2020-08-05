@@ -1,0 +1,147 @@
+<title>安全中心</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">账户管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">个人资料</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">修改手机号</a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card mb">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="3"><a>修改手机号</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <form class="layadmin-user-login-body layui-form isForm w70 i278" id="xgmm">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新手机号：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入新手机号"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">图形验证码：</label>
+                    <div class="layui-input-block fl ml0">
+                        <input style="width: 282px !important;" type="text" name="code" lay-verify="required"
+                            maxlength="30" placeholder="请输入图形验证码" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline fl">
+                        <img height="40" width="92" style="margin-left: 26px" class="buttonss" id="re_yzms"
+                            title="看不清？点一下换图" src="http://118.89.249.100/request/yzm"
+                            onclick="this.src='http://118.89.249.100/request/yzm'" align="absmiddle">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">短信验证码：</label>
+                    <div class="layui-input-block fl ml0">
+                        <input style="width: 282px !important;" type="text" name="yzm" lay-verify="required"
+                            placeholder="请输入短信验证码" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline fl">
+                        <button type="button" class="layui-btn btn-danger yzm" id="get-yzm">发送验证码</button>
+                    </div>
+                </div>
+                <div class="layui-form-item mb0" style="padding-bottom: 25px">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                        <button class="layui-btn btn-danger" lay-submit="" lay-filter="formDemo">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'x'], function () {
+        var form = layui.form,
+            x = layui.x,
+            admin = layui.admin;
+        var loading;
+
+        //发送短信验证码
+        $("#get-yzm").on('click', function () {
+            var yzmBtn = $(this);
+            var yzmdis = yzmBtn.attr('disabled');
+            var phone = $("input[name='phone']").val();
+            var code = $("input[name='code']").val();
+            if (!phone) {
+                layer.msg("请输入手机号码")
+                return false;
+            }
+            if (!code) {
+                layer.msg("请输入图形验证码")
+                return false;
+            }
+            if (!regex.isPhone(phone)) {
+                layer.msg("请输入正确格式的手机号")
+                return false;
+            }
+
+            if (!yzmdis) {
+                loading = layer.load(2);
+                layui.admin.req({
+                    url: 'http://118.89.249.100/request/sms',
+                    data: {
+                        type: 'bd',
+                        phone: phone,
+                        code: code
+                    },
+                    type: 'post',
+                    success: function (res) {
+                        layer.close(loading);
+                        if (res.code == "1") {
+
+                            yzmBtn.attr('disabled', true).addClass("disabled-btn");
+                            layer.msg(res.msg);
+                            countDown("#get-yzm");
+                        } else {
+                            layer.msg(res.msg);
+                            return false;
+                        }
+                    }
+                });
+            }
+        });
+
+        //修改手机号
+        form.on('submit(formDemo)', function (data) {
+            var field = data.field;
+            loading = layer.load(2);
+            layui.admin.req({
+                url: 'http://118.89.249.100/api/member/xgsjh',
+                data: {
+                    phone: field.phone,
+                    yzm: field.yzm
+                },
+                type: 'post',
+                success: function (res) {
+                    if (res.code == "1") {
+                        layer.close(loading);
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 1000,
+                            skin: 'jm-class'
+                        }, function () {
+                            window.location.hash = '/info';
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                }
+            });
+            return false;
+        })
+
+
+    });
+</script>

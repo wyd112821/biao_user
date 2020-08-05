@@ -1,0 +1,215 @@
+<title>账户资料</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">账户资料</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">账户管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">个人资料</a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card mb">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="3"><a>个人资料</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <script type="text/html" id="userInfoTpl">
+                <form class="layadmin-user-login-body layui-form isForm" id="provform" lay-filter="userInfoForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账户名称：</label>
+                        <div class="layui-input-block">
+                            {{ d.account }} [ 账户ID：{{ d.mid }}]
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">真实姓名：</label>
+                        <div class="layui-input-block" id="xm">
+                            <span>{{ d.idname }}</span>
+                            <a href="javascript:;" class="edit-field">修改</a>
+                            <input type="hidden" name="idname" value="{{ d.idname }}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="gender" value="0" title="保密">
+                            <input type="radio" name="gender" value="1" title="男" checked="">
+                            <input type="radio" name="gender" value="2" title="女">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话/手机：</label>
+                        <div class="layui-input-block" id="tel">
+                            <span>{{ d.phone }}</span>
+                            <a lay-href="sj">修改</a>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="area-picker">
+                        <div class="layui-form-label">地区：</div>
+                        <div class="layui-input-inline">
+                            <select name="province" id="province" lay-filter="province" lay-verify="required">
+                                <option value="">请选择省</option>
+                            </select>
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline">
+                            <select name="city" id="city" lay-filter="city" lay-verify="required">
+                                <option value="">请选择市</option>
+                            </select>
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline">
+                            <select name="county" id="area" lay-filter="area" lay-verify="required">
+                                <option value="">请选择县/区</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮编：</label>
+                        <div class="layui-input-block">
+                            <input name="postcode" placeholder="请输入邮编" value="{{ d.postcode }}" lay-verify="required"
+                                class="layui-input" type="text">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label vis"></label>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn btn-danger" lay-submit=""
+                                lay-filter="addmb">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </script>
+        </div>
+    </div>
+</div>
+
+<!--修改真实姓名弹窗模板-->
+<script id="editTpl" type="text/html">
+    <form class="layui-form layui-form-pane" action="" style="padding:20px 20px 0;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">{{ d.key }}</label>
+            <div class="layui-input-block">
+                <input type="text" name="value" value="{{ d.value }}" autocomplete="off" class="layui-input">
+                <input type="hidden" name="key" value="{{ d.id }}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-item-center">
+            <button class="layui-btn" lay-submit lay-filter="edit-submit">保存</button>
+        </div>
+    </form>
+</script>
+
+<script src="/u/controller/city.js"></script>
+<script src="/u/controller/city_linkage.js?v=01110"></script>
+<script>
+    layui.use(['jquery', 'form', 'laytpl', 'x'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            laytpl = layui.laytpl,
+            x = layui.x;
+
+
+        getUserInfo();
+
+        //修改字段
+        var editIndex;
+        $(document).on('click', '.edit-field', function () {
+            var value = $(this).prev().text();
+            var key = $(this).parent().prev().text();
+            var id = $(this).parent().attr('id');
+
+            var getTpl = editTpl.innerHTML;
+            laytpl(getTpl).render({
+                id: id,
+                key: key,
+                value: value
+            }, function (html) {
+                editIndex = layer.open({
+                    type: 1,
+                    title: '修改',
+                    area: '400px',
+                    btn: '',
+                    content: html,
+                });
+                //表单重载
+                form.render();
+            })
+        })
+
+        //保存修改字段
+        form.on('submit(edit-submit)', function (data) {
+            $('#' + data.field.key).find('span').text(data.field.value);
+            $('#' + data.field.key).find('input').val(data.field.value);
+            layer.close(editIndex);
+            return false;
+        })
+
+        // 提交
+        form.on('submit(addmb)', function (res) {
+            console.log(res.field);
+            layui.admin.req({
+                url: 'http://118.89.249.100/api/member/xgzl',
+                data: res.field,
+                type: 'post',
+                success: function (res) {
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 1000,
+                            skin: 'jm-class'
+                        }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(res.msg, x.layset());
+                    }
+                }
+            });
+            return false;
+        });
+
+        //获取个人资料信息
+        function getUserInfo() {
+            layui.admin.req({
+                url: 'http://118.89.249.100/api/member/info',
+                type: 'get',
+                success: function (res) {
+                    if (res.code > 0) {
+                        var getTpl = userInfoTpl.innerHTML;
+                        laytpl(getTpl).render(res.data, function (html) {
+                            $('.layui-card-body').html(html);
+                            treeSelect({
+                                s1: 'province',
+                                s2: 'city',
+                                s3: 'area',
+                                id: 'provform'
+                            });
+                            //给表单赋值
+                            form.val("userInfoForm", {
+                                "gender": res.data.gender
+                            });
+                            //初始化赋值地区三级联动
+                            initPareaEvent({
+                                sid: 'province',
+                                cid: 'city',
+                                aid: 'area',
+                                sval: res.data.province,
+                                cval: res.data.city,
+                                aval: res.data.county
+                            });
+                        });
+                    } else {
+                        layer.alert(res.msg, x.layset());
+                    }
+                }
+            });
+        }
+
+    })
+</script>

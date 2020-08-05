@@ -1,0 +1,96 @@
+<title>安全中心</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">账户管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">账户安全</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">密码修改</a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card mb">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="3"><a>密码修改</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <form class="layadmin-user-login-body layui-form isForm w70 i278" id="xgmm">
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-label-80">原密码：</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="oldpwd" required="required" lay-verify="required" maxlength="30"
+                            placeholder="请输入原密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-label-80">新密码：</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="newpwd" required="required" lay-verify="required" maxlength="30"
+                            placeholder="请输入您的新密码" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux" style="margin-left: 80px;">密码为8-20位 ,【字母、数字、@、_、-】</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-form-label-80">确认密码：</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="newpwd2" required="required" lay-verify="required" maxlength="30"
+                            placeholder="请再次输入您的新密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item mb0" style="padding-bottom: 25px">
+                    <label class="layui-form-label layui-form-label-80"></label>
+                    <div class="layui-input-block">
+                        <button class="layui-btn btn-danger" lay-submit="" lay-filter="formDemo">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'x'], function () {
+        var form = layui.form,
+            x = layui.x,
+            admin = layui.admin;
+        //重置密码
+        form.on('submit(formDemo)', function (obj) {
+            var field = obj.field;
+            // 确认密码
+            if (field.newpwd !== field.newpwd2) {
+                layer.msg('两次密码输入不一致');
+                return false;
+            }
+
+            //请求接口
+            admin.req({
+                url: 'http://118.89.249.100/api/member/xgmm',
+                data: {
+                    oldpwd: field.oldpwd,
+                    newpwd: field.newpwd
+                },
+                type: 'post',
+                success: function (res) {
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 1000,
+                            skin: 'jm-class'
+                        }, function () {
+                            window.location.hash = '/safe'
+                        });
+                    } else {
+                        layer.alert(res.msg, x.layset());
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+</script>

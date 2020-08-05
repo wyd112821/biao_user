@@ -1,0 +1,162 @@
+<title>我的优惠券</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">财务中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">优惠券列表</a>
+    </strong>
+</div>
+<div class="layui-card-body layui-card-bodyx fapiao-list">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><a>优惠券列表</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-card-body" style="padding: 0 32px">
+            <blockquote class="layui-elem-quote shuoming"><i class="iconfont icontixing"></i>请务必在过期前使用优惠券，域名注册优惠券系统会自动优先使用！
+            </blockquote>
+            <div class="layui-btn-container layui-table-cz layui-search-table">
+                <div class="layui-inline">
+                    <input type="text" placeholder="请输入你要搜索的商标/券码" class="layui-input search">
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn btn-common zuhe-button fl" id="search">搜索</button>
+                </div>
+            </div>
+            <table class="layui-hide" id="list" lay-filter="list"></table>
+        </div>
+    </div>
+</div>
+<style>
+    td {
+        color: #666;
+    }
+
+    #pushf .layui-input-block {
+        margin-left: 100px;
+    }
+
+    #pushf .layui-form-label {
+        width: 100px;
+        padding: 9px 0;
+    }
+
+    #pushf {
+        margin-bottom: -20px;
+    }
+
+    .yhqzt_0 {
+        color: #000;
+    }
+
+    .yhqzt_1 {
+        color: #009207;
+    }
+</style>
+<script>
+    layui.use(['index', 'table', 'form', 'x'], function () {
+        var table = layui.table, x = layui.x, $ = layui.jquery, where = {}, form = layui.form,
+            ask = {icon: 3, area: '400px', skin: 'jm-class', shadeClose: 1};
+        var objList = {
+            'zt': {title: '状态', 'param': 'zt'},
+            'lx': {title: '类型', 'param': 'lx'}
+        }
+        var pageList = [{
+            id: 'zt',
+            title: '状态',
+            param: 'zt',
+            list: []
+        }, {
+            id: 'lx',
+            title: '类型',
+            param: 'lx',
+            list: []
+        }];
+
+        layui.admin.req({
+            type: "get",
+            url: './u/json/yhq_xm.json',
+            success: function (re) {
+                if (re.code == 1) {
+                    pageList[0].list = re.data.zt;
+                    pageList[1].list = re.data.lx;
+                    x.sortSelect(pageList);
+                }
+            }
+        });
+
+        table.render({
+            elem: '#list'
+            , url: './u/json/yhq.json'
+            , defaultToolbar: ['', '', '']
+            , response: {statusCode: 1}
+            , page: true
+            , limit: 10
+            , cols: [[
+                {type: 'numbers', title: '序号', width: 100},
+                {field: 'lxstr', title: '<span class="sx lx" data-id="lx">类型</span>'},
+                {field: 'sj', title: '金额'},
+                {field: 'sj', title: '过期时间'},
+                {
+                    field: 'dqsj', title: '更新时间'
+                },
+                {
+                    field: 'zt', title: '<span class="sx zt" data-id="zt">状态</span>'
+                },
+                {field: 'sj', title: '转赠',templet: function (d) {
+                        return '不支持'
+                    }},
+                {
+                    field: 'yhq', title: '其他', templet: function (d) {
+                        return "券码:" + d.yhq;
+                    }
+                }
+            ]]
+            , done: function (res) {
+                for (var i in objList) {
+                    $('.' + i).text(objList[i].title);
+                }
+                if (res.count > 0) {
+                    for (var i in res.data) {
+                        var item = res.data[i];
+                        if (item.push == 0) {
+                            $('tr[data-index=' + i + '] input[type="checkbox"]').prop('disabled', true);
+                        }
+                    }
+                    form.render();
+                }
+            }
+        });
+
+        $("body").off("click", ".dropdown .layui-nav-child dd").on('click', ".dropdown .layui-nav-child dd", function () {
+            var $id = $(this).parents(".dropdown").attr("id");
+            var $val = $(this).attr('data-value');
+            var $txt = $(this).text();
+            objList[$id].title = $txt;
+            if (Object.keys(where).length == 0) {
+                for (var i in objList) {
+                    where[objList[i].param] = '';
+                }
+            }
+            where[objList[$id].param] = $val;
+            table.reload('list', {
+                where: where, page: {curr: 1}
+            });
+        });
+
+        // 搜索
+        $("#search").click(function () {
+            where.sou = $(".search").val();
+            table.reload('list', {
+                where: where, page: {curr: 1}
+            });
+        });
+
+
+    });
+</script>

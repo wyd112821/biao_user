@@ -1,0 +1,239 @@
+<title>官文列表</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">官文管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">官文列表</a>
+    </strong>
+</div>
+
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><a>官文列表</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <blockquote class="layui-elem-quote shuoming" style="margin: -10px 0 20px;"><i
+                    class="iconfont icontixing"></i>因商标局已更新电子送达发文方式，您通过我司递交的商标产生的全部类型官文均为电子版文件，文件将直接发送到您预留的邮箱地址，请用户下载电子版使用
+                （官方文件电子版法律效力与原纸质件一致）</blockquote>
+
+            <div class="layui-btn-container layui-search-table borderG layui-clear layui-inline-fl">
+                <form class="layui-form search-order-form" action="">
+                    <div class="layui-inline">
+                        <input type="checkbox" name="choose" lay-skin="primary" lay-filter="allChoose" id="allChoose">
+                        <button type="button" class="layui-btn" id="allDownload">批量下载</button>
+                    </div>
+                    <div class="layui-inline search-xdsj-wrap">
+                        <label class="layui-form-label">发文日期：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="fwrq" name="fwrq" placeholder="开始时间 - 结束时间">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <select name="zslx">
+                            <option value="1">全部类型证书</option>
+                            <option value="2">类型证书1</option>
+                            <option value="3">类型证书2</option>
+                            <option value="4">类型证书3</option>
+                        </select>
+                    </div>
+                    <div class="layui-inline" style="width:280px">
+                        <input name="keyword" placeholder="请输入商品名称、申请号及主体" class="layui-input search">
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn" lay-submit lay-filter="search-gw">搜索</button>
+                    </div>
+                </form>
+            </div>
+
+            <table class="layui-hide" id="gw-list-tabel" lay-filter="gw-list-tabel"></table>
+        </div>
+    </div>
+</div>
+
+<!--操作模板-->
+<script id="toolTpl" type="text/html">
+    <div class="tool-btns-wrap">
+        <button class="layui-btn layui-btn-primary" lay-event="look_or_upload">查看/下载</button>
+    </div>
+</script>
+
+<!--查看下载-->
+<script id="lookOrUploadTpl" type="text/html">
+    <div>{{ d.id }}</div>
+</script>
+
+<!-- mock数据接口 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js"></script>
+<script>
+    layui.use(['table', 'form', 'laydate', 'laytpl'], function () {
+        var table = layui.table,
+            $ = layui.jquery,
+            laydate = layui.laydate,
+            form = layui.form,
+            laytpl = layui.laytpl;
+
+
+        //mockmock数据-订单列表
+        var Random = Mock.Random;
+        Mock.mock('http:localhost:8001/order/p_order_list?page=1&limit=10&csrf_token=111', {
+            'count': 100,
+            'data|10': [{
+                'id|+1': 1,
+                'sbmc': '@ctitle(6)',
+                'sqh': '@integer(10)',
+                'gwlx': '商标注册申请书',
+                'sblb': '第16类：广告贸易（共10项）',
+                'sqr': '@ctitle(10)',
+                'endsj': '@date("yyyy-MM-dd HH:mm:ss")'
+            }],
+            'code': 0,
+            'msg': '获取成功'
+        });
+        Mock.mock('http:localhost:8001/user_zh/del_xiaoxi', {
+            'code': 1,
+            'msg': '关闭成功'
+        });
+
+        //日期范围选择
+        laydate.render({
+            elem: '#fwrq',
+            range: true,
+            theme: '#E1251B'
+        });
+
+        //数据表格渲染
+        table.render({
+            elem: '#gw-list-tabel',
+            url: 'http:localhost:8001/order/p_order_list',
+            cols: [
+                [{
+                    type: 'checkbox'
+                }, {
+                    field: 'sqh',
+                    width: 120,
+                    title: '申请号',
+                    align: 'center'
+                }, {
+                    field: 'gwlx',
+                    title: '官文类型',
+                    align: 'center'
+                }, {
+                    field: 'sbmc',
+                    title: '商标名称',
+                    align: 'center'
+                }, {
+                    field: 'sblb',
+                    title: '商标类别',
+                    align: 'center'
+                }, {
+                    field: 'sqr',
+                    title: '申请人',
+                    align: 'center'
+                }, {
+                    field: 'endsj',
+                    title: '收文时间',
+                    align: 'center'
+                }, {
+                    width: 140,
+                    title: '操作',
+                    toolbar: '#toolTpl',
+                    align: 'center'
+                }]
+            ],
+            page: true,
+            done: function (res) {
+                console.log(res)
+            }
+        });
+
+
+        //搜索
+        form.on('submit(search-gw)', function (data) {
+            var data = data.field;
+            var sjArr = data.fwrq.split(' - ');
+            data.kssj = sjArr[0];
+            data.jssj = sjArr[1];
+            table.reload('gw-list-tabel', {
+                where: {
+                    data
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听行工具事件
+        table.on('tool(gw-list-tabel)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'look_or_upload') { //查看下载
+                var getTpl = lookOrUploadTpl.innerHTML;
+                laytpl(getTpl).render(data, function (html) {
+                    addLxrIndex = layer.open({
+                        type: 1,
+                        title: '查看下载',
+                        area: '700px',
+                        btn: '',
+                        content: html,
+                    });
+                    //表单重载
+                    form.render();
+                })
+            }
+        });
+
+        //全选逻辑
+        form.on('checkbox(allChoose)', function (data) {
+            var child = $(".layui-form input[type=checkbox]");
+            child.each(function (index, item) {
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        })
+
+        var $allChoose = $('#allChoose');
+        var child = $(".layui-table td input[type=checkbox]");
+        table.on('checkbox(gw-list-tabel)', function (obj) {
+            var checkoutNum = 0;
+            if (obj.type == 'all') {
+                if (obj.checked == true) {
+                    $allChoose.prop('checked', true)
+                } else {
+                    $allChoose.prop('checked', false)
+                }
+                form.render('checkbox');
+            } else if (obj.type == 'one') {
+                child = $(".layui-table td input[type=checkbox]");
+                child.each(function (index, item) {
+                    if (item.checked === true) {
+                        checkoutNum++
+                    }
+                });
+                if (checkoutNum == child.length) {
+                    $allChoose.prop('checked', true)
+                } else if (checkoutNum < child.length) {
+                    $allChoose.prop('checked', false)
+                }
+                form.render('checkbox');
+            }
+        });
+
+        //批量下载
+        $('#allDownload').click(function () {
+            if (!$allChoose.prop('checked')) {
+                layer.msg('请全选')
+            } else {
+                layer.msg('批量下载')
+            }
+        })
+    })
+</script>

@@ -1,0 +1,192 @@
+<title>安全中心</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">账户管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">账户安全</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">
+            <script template type="text/html">
+                {{# if(layui.router().search.id){}}
+                修改新地址
+                {{# }else{}}
+                添加新地址
+                {{# }}}
+            </script>
+        </a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card mb">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li lay-href="address_list"><a>地址管理</a></li>
+                    <script template type="text/html">
+                        <li class="layui-this"><a>{{# if(layui.router().search.id){}}
+                                修改地址
+                                {{# }else{}}
+                                添加新地址
+                                {{# }}}</a></li>
+                    </script>
+
+                </ul>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <form class="layadmin-user-login-body layui-form isForm w70 i278" id="address-form"
+                lay-filter="addressForm">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收件人：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" lay-verify="required" placeholder="请输入收件人" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机号：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入手机号"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" id="area-picker">
+                    <div class="layui-form-label">邮寄地址：</div>
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline">
+                            <select name="province" id="province" lay-filter="province" lay-verify="required">
+                                <option value="">请选择省</option>
+                            </select>
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline">
+                            <select name="city" id="city" lay-filter="city" lay-verify="required">
+                                <option value="">请选择市</option>
+                            </select>
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline">
+                            <select name="county" id="area" lay-filter="area" lay-verify="required">
+                                <option value="">请选择县/区</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-label"></div>
+                    <div class="layui-input-block" style="margin-top: 8px">
+                        <input type="text" name="addr" lay-verify="required" placeholder="请填写联系人详细地址" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item mb0" style="padding-bottom: 25px">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                        <script template type="text/html">
+                            {{# if(layui.router().search.id){}}
+                            <input type="hidden" name="type" value="2">
+                            <input type="hidden" name="id" value="" id="addrId">
+                            <button class="layui-btn btn-danger" lay-submit="" lay-filter="formDemo">修改</button>
+                            {{# }else{}}
+                            <input type="hidden" name="type" value="1">
+                            <button class="layui-btn btn-danger" lay-submit="" lay-filter="formDemo">提交</button>
+                            {{# }}}
+                        </script>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/u/controller/city.js"></script>
+<script src="/u/controller/city_linkage.js?v=01110"></script>
+<script>
+    layui.use(['form', 'x'], function () {
+        var form = layui.form,
+            x = layui.x,
+            admin = layui.admin;
+
+        var addrId = layui.router().search.id;
+        if (addrId) {
+            $("#addrId").val(addrId);
+            getAddrInfo(addrId);
+        } else {
+            treeSelect({
+                s1: 'province',
+                s2: 'city',
+                s3: 'area',
+                id: 'address-form'
+            });
+        }
+
+        //地址添加和修改
+        form.on('submit(formDemo)', function (obj) {
+            var province = $('#province').next().find('input').val();
+            var city = $('#city').next().find('input').val();
+            var area = $('#area').next().find('input').val();
+            var field = obj.field;
+            field.ssq_name = province + '/' + city + '/' + area;
+            //请求接口
+            admin.req({
+                url: 'http://118.89.249.100/api/address/add',
+                data: field,
+                type: 'post',
+                success: function (res) {
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 1000,
+                            skin: 'jm-class'
+                        }, function () {
+                            window.location.hash = '/address_list'
+                        });
+                    } else {
+                        layer.alert(res.msg, x.layset());
+                    }
+                }
+            });
+            return false;
+        });
+
+        //获取地址信息
+        function getAddrInfo(id) {
+            admin.req({
+                url: 'http://118.89.249.100/api/address/get',
+                type: 'get',
+                data: {
+                    id: id
+                },
+                success: function (res) {
+                    if (res.code > 0) {
+                        treeSelect({
+                            s1: 'province',
+                            s2: 'city',
+                            s3: 'area',
+                            id: 'address-form'
+                        });
+                        //给表单赋值
+                        form.val("addressForm", {
+                            "name": res.data.name,
+                            "phone": res.data.phone,
+                            "addr": res.data.addr
+                        });
+                        //初始化赋值地区三级联动
+                        initPareaEvent({
+                            sid: 'province',
+                            cid: 'city',
+                            aid: 'area',
+                            sval: res.data.province,
+                            cval: res.data.city,
+                            aval: res.data.county
+                        });
+                        form.render();
+                    } else {
+                        layer.alert(res.msg, x.layset());
+                    }
+                }
+            });
+        }
+
+    });
+</script>

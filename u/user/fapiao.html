@@ -1,0 +1,162 @@
+<title>申请发票</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">财务中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">发票申请</a>
+    </strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-href="zj"><a>发票申请</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="zjmx-body">
+            <div class="layui-card-body layui-card-je fapiao-msg zjmx-bottom" style="padding-left: 20px">
+                <div class="fl" style="width: 240px;">
+                    <strong style="color: #E8001C">1212</strong> 元
+                    <p>上个月未提交索取发票金额</p>
+                </div>
+                <div class="fl djje" style="width: 240px;">
+                    <strong>222</strong> 元
+                    <p>本月未提交索取发票金额</p>
+
+                </div>
+                <div class="fl kyye" style="width: 240px;">
+                    <strong>212</strong> 元
+                    <p>您当前的合计可开票余额</p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body pt0">
+            <div class="layadmin-user-login-box layadmin-user-login-body layui-form isForm" id="fpform">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所有者类型：</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_yy" value="1" title="个人">
+                        <input type="radio" name="is_yy" value="0" title="企业" checked="">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">发票类型：</label>
+                    <div class="layui-input-block email tixian-info">
+                        <span>增值税普通发票</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开票金额：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input fl" name="qian" required="required" msg="请输入开票金额"
+                               onkeyup="value=value.replace(/[^\d]/g,'')"><span class="yuan ml24 text-grey">您目前可索取发票总额：22元</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">发票抬头：</label>
+                    <div class="layui-input-block email tixian-info">
+                        <span><strong>33</strong><span class="text-grey ml24">发票抬头只能是账户所有者名称，如需更改，请进行</span></span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">发票内容：</label>
+                    <div class="layui-input-block email tixian-info">
+                        <span><input type="radio" name="fpnr" value="2" title="网络服务费" checked></span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮寄地址：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input fl" name="dizhi" placeholder="请输入详细地址"
+                               required="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮编：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input fl" name="youbian" placeholder="请输入邮编"
+                               required="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收件人：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input fl" name="sjr" placeholder="请输入收件人姓名"
+                               required="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话：</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input fl" name="dh" placeholder="请输入收件人手机号码"
+                               required="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">快递费用：</label>
+                    <div class="layui-input-block">
+                        <span><b class="text-danger">10 元</b><span
+                                class="text-grey">（用户承担的快递费用，请保证账户有足够的余额，快递费用不再开票）</span></span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">温馨提醒：</label>
+                    <div class="layui-input-block tixian-info">
+                        <span class="text-danger">非法出售发票犯罪，请勿非法买卖发票，否则后果自负，查看相关司法解释！</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                        <button class="layui-btn btn-common" lay-submit="" lay-filter="formDemo">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['jquery', 'form'], function () {
+        $ = layui.jquery;
+        var form = layui.form;
+        form.render();
+        //提交
+        form.on('submit(formDemo)', function (obj) {
+            if (!layui.x.yz("fpform")) {
+                return false;
+            }
+            var field = obj.field;
+            var zong = $('#zong').text();
+            if (parseInt(field.qian) > parseInt(zong)) {
+                layer.msg('您当前最多可开票金额为:' + zong + '元,请重新输入!');
+                return false;
+            }
+
+            layer.confirm("您是否确定提交?", {icon: 3, skin: 'jm-class'}, function (index) {
+                field.csrf_token = layui.setter.token;
+                layui.admin.req({
+                    url: '/user_main/p_fapiao'
+                    , data: field
+                    , type: 'post'
+                    , success: function (res) {
+                        layer.close(index);
+                        if (res.code > 0) {
+                            layer.msg(res.msg, {icon: 1, time: 2000, skin: 'jm-class'}, function () {
+                                layui.x.sx(0);
+                            });
+                        }
+                        else if (res.code == -1) {
+                            layer.alert('<font color=red>' + res.msg + '</font>', layui.x.layset());
+                        }
+                    }
+                });
+            });
+            return false;
+        });
+    })
+</script>

@@ -1,0 +1,266 @@
+<title>我的商标</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">商标管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">我的商标</a>
+    </strong>
+</div>
+
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><a>订单列表</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div class="layui-btn-container layui-search-table borderG layui-clear layui-inline-fl">
+                <form class="layui-form search-order-form" action="">
+                    <div class="layui-inline search-sorts-wrap">
+                        <div class="search-sorts-inline">
+                            <select name="searchSort" lay-filter="search-sort">
+                                <option value="1">订单号</option>
+                                <option value="2">申请人名称</option>
+                                <option value="3">商标名称</option>
+                                <option value="4">商标类别</option>
+                            </select>
+                        </div>
+
+                        <div class="search-sorts-inline">
+                            <input name="ddh" placeholder="请输入订单号" class="layui-input search">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline search-xdsj-wrap">
+                        <label class="layui-form-label">下单时间：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="xdsj" placeholder="开始时间 - 结束时间">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button class="layui-btn" lay-submit lay-filter="search-brand">搜索</button>
+                    </div>
+                </form>
+
+                <div class="register-sb-btn">
+                    <a class="layui-btn layui-btn-primary">注册新商标</a>
+                </div>
+            </div>
+
+            <table class="layui-hide" id="order-list-tabel" lay-filter="order-list-tabel"></table>
+        </div>
+    </div>
+</div>
+<!--商标信息模板-->
+<script id="sbxxTpl" type="text/html">
+    <div class="sbxx-wrap">
+        <div class="img">
+            <img src="{{ d.img }}">
+        </div>
+        <div class="text">
+            <h3 class="mc">文字商标：{{ d.mc }}</h3>
+            <p class="ddh">订单号：{{ d.ddh }}</p>
+            <p class="xdsj">下单时间：{{ d.xdsj }}</p>
+        </div>
+    </div>
+</script>
+<!--操作模板-->
+<script id="toolTpl" type="text/html">
+    <div class="tool-btns-wrap">
+        <button class="layui-btn" lay-event="look">详情</button>
+    </div>
+</script>
+
+<!-- mock数据接口 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js"></script>
+<script>
+    layui.use(['table', 'form', 'laydate', 'laytpl', 'x'], function () {
+        var x = layui.x;
+        var table = layui.table,
+            $ = layui.jquery,
+            laydate = layui.laydate,
+            form = layui.form,
+            laytpl = layui.laytpl;
+
+
+        //mockmock数据-订单列表
+        var Random = Mock.Random;
+        Mock.mock('http:localhost:8001/order/p_order_list?page=1&limit=10&csrf_token=111', {
+            'count': 100,
+            'data|10': [{
+                'id|+1': 1,
+                'mc': '@ctitle(6)',
+                'img': Random.image('177x177'),
+                'ddh': '@string("upper", 5)' + '@integer(10000)',
+                'zt|0-14': 0,
+                'zt_msg|1': ['待审核', '审核不通过', '已提交到商标局', '提交完成', '商标局不予受理', '商标局受理通过', '商标局部分驳回',
+                    '商标局驳回', '商标局审核通过', '待补正', '放弃补正', '补正处理中', '补正超期', '补正完成', '申请成功'
+                ],
+                'sort': '第16类：广告贸易（共10项）',
+                'sort_desc': '@cparagraph(3)',
+                'xdsj': '@date("yyyy-MM-dd HH:mm:ss")',
+                'sqr': '@ctitle(8)'
+            }],
+            'code': 0,
+            'msg': '获取成功'
+        });
+        Mock.mock('http:localhost:8001/user_zh/del_xiaoxi', {
+            'code': 1,
+            'msg': '关闭成功'
+        });
+
+        //日期范围选择
+        laydate.render({
+            elem: '#xdsj',
+            range: true,
+            theme: '#E1251B'
+        });
+
+        var objList = {
+            'zt': {
+                title: '商标状态',
+                param: 'zt'
+            }
+        }
+        var pageList = [{
+            id: 'zt',
+            title: '商标状态',
+            param: 'zt',
+            list: [{
+                '待审核': 0
+            }, {
+                '审核不通过': 1
+            }, {
+                '已提交到商标局': 2
+            }, {
+                '提交完成': 3
+            }, {
+                '商标局不予受理': 4
+            }, {
+                '商标局受理通过': 5
+            }, {
+                '商标局部分驳回': 5
+            }, {
+                '商标局驳回': 6
+            }, {
+                '待补正': 7
+            }, {
+                '放弃补正': 8
+            }, {
+                '补正处理中': 9
+            }, {
+                '补正超期': 10
+            }, {
+                '补正完成': 11
+            }, {
+                '申请成功': 12
+            }]
+        }];
+
+        layui.x.sortSelects(pageList)
+
+        //数据表格渲染
+        table.render({
+            elem: '#order-list-tabel',
+            url: 'http:localhost:8001/order/p_order_list',
+            cols: [
+                [{
+                    width: 520,
+                    title: '商标信息',
+                    templet: '#sbxxTpl'
+                }, {
+                    field: 'sort',
+                    title: '分类',
+                    align: 'center'
+                }, {
+                    field: 'sqr',
+                    width: 150,
+                    title: '申请人',
+                    align: 'center'
+                }, {
+                    field: 'zt_msg',
+                    width: 200,
+                    title: '<span class=\'sx zt\' data-id=\'zt\'>商标状态</span>',
+                    align: 'center'
+                }, {
+                    width: 140,
+                    title: '操作',
+                    toolbar: '#toolTpl',
+                    align: 'center'
+                }]
+            ],
+            page: true,
+            done: function (res) {
+                console.log(res)
+            }
+        });
+
+        $(document).off('click', '.dropdown .layui-nav-child dd');
+        var sendData = {};
+        $(document).on('click', ".dropdown .layui-nav-child dd", function () {
+            var $id = $(this).parents(".dropdown").attr("id");
+            var $val = $(this).attr('data-value');
+            var $txt = $(this).text();
+            objList[$id].title = $txt;
+            if (Object.keys(sendData).length == 0) {
+                for (var i in objList) {
+                    sendData[objList[i].param] = '';
+                }
+            }
+            sendData[objList[$id].param] = $val;
+            table.reload('order-list-tabel', {
+                where: sendData
+            });
+        })
+
+        //搜索分类
+        var $searchInput = $('.search-sorts-inline .layui-input.search');
+        form.on('select(search-sort)', function (data) {
+            console.log(data.value);
+            switch (data.value) {
+                case '1':
+                    $searchInput.attr('placeholder', '请输入订单号').attr('name', 'ddh');
+                    break;
+                case '2':
+                    $searchInput.attr('placeholder', '请输入申请人名称').attr('name', 'sqr');
+                    break;
+                case '3':
+                    $searchInput.attr('placeholder', '请输入商标名称').attr('name', 'mc');
+                    break;
+                case '4':
+                    $searchInput.attr('placeholder', '请输入商标类别').attr('name', 'sort');
+                    break;
+            }
+        });
+
+        //搜索
+        form.on('submit(search-brand)', function (data) {
+            var data = data.field;
+            table.reload('order-list-tabel', {
+                where: {
+                    data
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听行工具事件
+        table.on('tool(order-list-tabel)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'look') { //查看详情
+
+            }
+        });
+
+    })
+</script>

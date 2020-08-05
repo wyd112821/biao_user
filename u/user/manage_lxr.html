@@ -1,0 +1,224 @@
+<title>管理联系人</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">模板管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">管理联系人</a>
+    </strong>
+</div>
+
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><a>管理联系人</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <blockquote class="layui-elem-quote shuoming" style="margin: -10px 0 20px;"><i
+                    class="iconfont icontixing"></i>仅支持保存10条联系人信息，超出请删除历史联系人后，重新添加</blockquote>
+
+            <div class="layui-btn-container layui-search-table borderG layui-clear layui-inline-fl">
+                <button class="layui-btn" id="addLxr">添加联系人</button>
+            </div>
+
+            <table class="layui-hide" id="order-list-tabel" lay-filter="order-list-tabel"></table>
+        </div>
+    </div>
+</div>
+
+<!--添加联系人-->
+<script id="addLxrTpl" type="text/html">
+    <form class="layui-form add-lxr-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="req">*</i>联系人姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="mc" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="req">*</i>联系人电话：</label>
+            <div class="layui-input-block">
+                <input type="text" name="tel" autocomplete="off" class="layui-input" lay-verify="required|phone">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="req">*</i>联系人邮箱：</label>
+            <div class="layui-input-block">
+                <input type="text" name="email" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="req">*</i>联系人地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="adress" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="req">*</i>联系人邮编：</label>
+            <div class="layui-input-block">
+                <input type="text" name="yb" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-item-center">
+            <button class="layui-btn" lay-submit lay-filter="add-lxr-submit">保存</button>
+        </div>
+    </form>
+</script>
+
+<!--操作模板-->
+<script id="toolTpl" type="text/html">
+    <div class="tool-btns-wrap">
+        <button class="layui-btn layui-btn-primary" lay-event="del">删除</button>
+    </div>
+</script>
+
+<!-- mock数据接口 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js"></script>
+<script>
+    layui.use(['table', 'form', 'laytpl'], function () {
+        var table = layui.table,
+            $ = layui.jquery,
+            form = layui.form,
+            laytpl = layui.laytpl;
+
+
+        //mockmock数据-订单列表
+        var Random = Mock.Random;
+        Mock.mock('http:localhost:8001/order/p_order_list?page=1&limit=10&csrf_token=111', {
+            'count': 100,
+            'data|10': [{
+                'id|+1': 1,
+                'mc': '@ctitle(3)',
+                'tel': '18956012617',
+                'area': Random.county(true),
+                'adress': '置地广场A座#8 1102'
+            }],
+            'code': 0,
+            'msg': '获取成功'
+        });
+        Mock.mock('http:localhost:8001/user_zh/del_xiaoxi', {
+            'code': 1,
+            'msg': '删除成功'
+        });
+
+        //数据表格渲染
+        table.render({
+            elem: '#order-list-tabel',
+            url: 'http:localhost:8001/order/p_order_list',
+            cols: [
+                [{
+                    field: 'id',
+                    title: '序号',
+                    width: 100,
+                    align: 'center'
+                }, {
+                    field: 'mc',
+                    title: '姓名',
+                    width: 120,
+                    align: 'center'
+                }, {
+                    field: 'tel',
+                    title: '电话',
+                    width: 160,
+                    align: 'center'
+                }, {
+                    field: 'area',
+                    title: '省/市/县区',
+                    align: 'center'
+                }, {
+                    field: 'adress',
+                    title: '地址',
+                    align: 'center'
+                }, {
+                    width: 140,
+                    title: '操作',
+                    toolbar: '#toolTpl',
+                    align: 'center'
+                }]
+            ],
+            page: true,
+            done: function (res) {
+                console.log(res)
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(order-list-tabel)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') { //删除
+                layer.confirm('<font color=red>确定删除该联系人吗</font>', {
+                    title: "温馨提示",
+                    icon: 3
+                }, function (index) {
+                    layui.admin.req({
+                        type: 'POST',
+                        url: 'http:localhost:8001/user_zh/del_xiaoxi',
+                        data: {
+                            ids: data.id
+                        },
+                        success: function (res) {
+                            layer.close(index);
+                            if (res.code == 1) {
+                                obj.del();
+                                layer.msg(res.msg, {
+                                    time: 1000
+                                });
+                            } else if (res.code == -1) {
+                                layer.alert(res.msg, layui.x.layset())
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+        //添加联系人
+        var addLxrIndex;
+        $('#addLxr').click(function () {
+            var getTpl = addLxrTpl.innerHTML;
+            laytpl(getTpl).render({
+                title: '添加联系人'
+            }, function (html) {
+                addLxrIndex = layer.open({
+                    type: 1,
+                    title: '添加联系人',
+                    area: '460px',
+                    btn: '',
+                    content: html,
+                });
+                //表单重载
+                form.render();
+            })
+        })
+
+        //添加联系人提交按钮
+        form.on('submit(add-lxr-submit)', function (data) {
+            layui.admin.req({
+                type: 'POST',
+                url: 'http:localhost:8001/user_zh/del_xiaoxi',
+                data: data.field,
+                success: function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg, {
+                            time: 1000
+                        }, function () {
+                            layer.close(addLxrIndex);
+                            window.location.reload();
+                        });
+                    } else if (res.code == -1) {
+                        layer.alert(res.msg, layui.x.layset())
+                    }
+                }
+            });
+            return false;
+        })
+
+    })
+</script>

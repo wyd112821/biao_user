@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>管理中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="./u/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1977083_b51sxpo3zou.css" media="all">
+    <link rel="stylesheet" href="./u/style/base.css" media="all">
+    <script>
+        var uid = 11,
+            csrf_token = '111',
+            LANG_LIST = ['zhcn', 'us'],
+            is_agent = "{$_AGENT}";
+        var DEFAULT_LANG = 'zhcn';
+    </script>
+</head>
+
+<body>
+    <div id="LAY_app"></div>
+
+    <script src="./u/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: './u/',
+            version: new Date().getTime() //'1.2.1'
+        }).use('index', function () {
+
+        });
+    </script>
+</body>
+
+</html>

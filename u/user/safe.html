@@ -1,0 +1,44 @@
+<title>账号安全</title>
+<div class="layadmin-pagetabs">
+	<strong class="on">
+		<a href="">个人中心</a>
+		<i class="iconfont iconico_leftnav_down_sel1"></i>
+		<a href="">账户管理</a>
+		<i class="iconfont iconico_leftnav_down_sel1"></i>
+		<a href="javascript:;">账号安全</a>
+	</strong>
+</div>
+<div class="layui-fluid layui-card-bodyx">
+	<div class="layui-card" style="padding-bottom: 200px">
+		<div class="layui-tab-content layui-card">
+			<div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+				<ul class="layui-tab-title">
+					<li class="layui-this"><a>账号安全</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="layui-card-body" style="padding: 0 32px">
+				<blockquote class="layui-elem-quote shuoming"><i class="iconfont icontixing"></i>建议您启动全部设置，以保障账户安全。</blockquote>
+			<div class="safe-level">
+				<span class="fl">安全级别：</span>
+				<span class="x-progress fl"><span></span></span>
+				<span class="text-danger fl">较低</span>
+			</div>
+			<ul class="safe-list">
+				<li><i class="iconfont iconico_ture fl"></i><span class="safe-1">登录密码</span><span class="safe-2">安全性高的密码可以使您的账号更安全，建议您定期的更换密码。</span><a lay-href="pass">设置</a></li>
+				<li><i class="iconfont iconico_danger fl"></i><span class="safe-1">邮箱验证</span><span class="safe-2">你验证的邮箱 1872364782891@163.com ，若丢失或停用 ，请立即更换，避免账户被盗。</span><a href="">验证</a></li>
+				<li><i class="iconfont iconico_ture fl"></i><span class="safe-1">手机验证</span><span class="safe-2">你验证的手机 13844527192 若丢失或停用，请立即更换，避免被盗。</span><a lay-href="sj">更换</a></li>
+				<li><i class="iconfont iconico_ture fl"></i><span class="safe-1">微信授权</span><span class="safe-2">未检测到您的微信授权，建议您授权微信登录提高账号安全</span><a href="">授权</a></li>
+				<li><i class="iconfont iconico_danger fl"></i><span class="safe-1">QQ授权</span><span class="safe-2">您的QQ 7812******* 已经授权登录头牌，为了账号内资料安全，请绑定手机号。</span><a href="">解绑</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use(['table','x'], function () {
+		var layer = layui.layer;
+		var $ = layui.jquery;
+
+	});
+</script>

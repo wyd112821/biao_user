@@ -1,0 +1,171 @@
+/*订单列表*/
+.layui-tab-title li .layui-tab-close {
+    display: none;
+}
+
+.search-order-form {
+    float: left;
+}
+
+.search-sorts-wrap {
+    width: auto;
+}
+
+.search-sorts-inline {
+    float: left;
+}
+
+.search-sorts-inline .layui-form-select .layui-input {
+    width: 134px;
+    border-right: none;
+}
+
+.search-order-form .layui-input {
+    height: 32px;
+    border-radius: 0;
+}
+
+.search-sorts-inline .layui-input.search {
+    width: 300px;
+    height: 32px;
+    border-radius: 0;
+}
+
+.search-xdsj-wrap .layui-form-label {
+    padding: 0;
+    line-height: 32px;
+}
+
+.search-xdsj-wrap .layui-input {
+    width: 200px;
+}
+
+.layui-laydate-content td.laydate-selected {
+    background-color: #d6d1d1 !important;
+}
+
+.layui-laydate-footer span:hover {
+    color: #E1251B !important;
+}
+
+.search-order-form .layui-btn {
+    background-color: #E1251B;
+}
+
+.register-sb-btn {
+    float: right;
+}
+
+.register-sb-btn .layui-btn-primary {
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid #E1251B;
+    background: #fff;
+    color: #E1251B;
+}
+
+.dropdown .layui-nav-child dd:hover {
+    background-color: #E1251B !important;
+}
+
+.layui-table-cell {
+    height: auto !important;
+    min-height: 28px;
+}
+
+.sbxx-wrap {
+    padding: 16px 0;
+    overflow: hidden;
+}
+
+.sbxx-wrap .img {
+    float: left;
+    width: 117px;
+    height: 117px;
+    border: 1px solid #ECECEC;
+}
+
+.layui-table .sbxx-wrap .img img {
+    max-width: 117px !important;
+    width: 117px !important;
+    height: 117px !important;
+}
+
+.sbxx-wrap .text {
+    float: left;
+    padding-left: 24px;
+    color: #333;
+    text-align: left;
+}
+
+
+.sbxx-wrap .text .mc {
+    line-height: 30px;
+    font-size: 16px;
+}
+
+.sbxx-wrap .text .ddh {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.sbxx-wrap .text .xdsj {
+    font-size: 14px;
+    color: #999;
+}
+
+.tool-btns-wrap .layui-btn {
+    width: auto;
+    min-width: 85px;
+    height: 24px;
+    line-height: 22px;
+    background-color: #E1251B;
+    padding: 0;
+}
+
+.tool-btns-wrap .layui-btn.layui-btn-primary {
+    background-color: #fff;
+    border: 1px solid #E1251B;
+    color: #E1251B;
+}
+
+.layui-layer-btn .layui-layer-btn0 {
+    border-color: #E1251B !important;
+    background-color: #E1251B !important;
+}
+
+.layui-table-page,
+.layui-table-total {
+    margin-bottom: 0 !important;
+}
+
+.add-lxr-form {
+    padding: 20px 20px 0;
+}
+
+.add-lxr-form .layui-form-label {
+    width: 100px;
+}
+
+.add-lxr-form .layui-form-label i.req {
+    color: #E1251B;
+}
+
+.add-lxr-form .layui-input-block {
+    margin-left: 100px;
+}
+
+.layui-form-item-center {
+    text-align: center;
+}
+
+.layui-form-label-80 {
+    width: 80px !important;
+}
+
+.disabled-btn {
+    border: 1px solid #ddd !important;
+    background-color: #ddd !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+}
