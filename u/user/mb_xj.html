@@ -76,8 +76,8 @@
                                     <div class="layui-form-item">
                                         <div class="layui-form-label">联系人电话</div>
                                         <div class="layui-input-inline">
-                                            <input type="number" name="phone" value="{$member[phone]}"
-                                                autocomplete="off" placeholder="请输入联系人手机号（必填）" class="layui-input">
+                                            <input type="number" name="phone" value="" autocomplete="off"
+                                                placeholder="请输入联系人手机号（必填）" class="layui-input deal-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -174,7 +174,7 @@
                                         <div class="layui-form-label">联系人电话</div>
                                         <div class="layui-input-inline">
                                             <input type="number" name="phone" autocomplete="off"
-                                                placeholder="请输入联系人手机号（必填）" class="layui-input">
+                                                placeholder="请输入联系人手机号（必填）" class="layui-input deal-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -304,12 +304,7 @@
                                     <input class="layui-input" name="ztnameEn" type="text" placeholder="请填写企业的英文名称">
                                     <input class="layui-input" name="ztname" type="text" placeholder="营业执照中文名称，必须为中文简体">
                                     <label>申请主体所属国家地区</label>
-                                    <select name="gjdq" lay-filter="change_gjdq">
-                                        <option value="">请选择所属国家地区</option>
-                                        {loop:$gjdq $val}
-                                        <option value="{$val[" title"]}">{$val["title"]}({$val["tag"]})</option>
-                                        {/loop}
-                                    </select>
+                                    <select name="gjdq" class="change_gjdq"></select>
                                     <label>证件地址</label>
                                     <input class="layui-input" name="ztdzEn" type="text" placeholder="请输入营业执照对应的英文地址">
                                     <input class="layui-input" name="ztdz" type="text" placeholder="营业执照中文地址，必须为中文简体">
@@ -324,7 +319,7 @@
                                     <div class="layui-form-item">
                                         <div class="layui-form-label">主体身份证明</div>
                                         <div class="layui-input-inline">
-                                            <p class="tip"> <a href="{$kfurl}" target="_blank"
+                                            <p class="tip"> <a href="" target="_blank"
                                                     class="left btn bd_red ml-20 ">无营业执照？</a></p>
                                             <div class="upload-wrapper">
                                                 <div class="upload-item fl">
@@ -413,12 +408,7 @@
                                     <input class="layui-input" name="ztname" type="text"
                                         placeholder="请填写申请人中文名称，必须为中文简体">
                                     <label>所属国家地区</label>
-                                    <select name="gjdq" lay-filter="change_gjdq">
-                                        <option value="">请选择所属国家地区</option>
-                                        {loop:$gjdq $val}
-                                        <option value="{$val[" title"]}">{$val["title"]}({$val["tag"]})</option>
-                                        {/loop}
-                                    </select>
+                                    <select name="gjdq" class="change_gjdq"></select>
                                     <label>护照地址</label>
                                     <input class="layui-input" name="ztdzEn" type="text" placeholder="请填写护照对应的英文地址">
                                     <input class="layui-input" name="ztdz" type="text" placeholder="护照的中文地址，必须为中文简体">
@@ -459,6 +449,9 @@
             var ztlx = $(this).data("lx");
             $("#ztlx").val(ztlx);
         });
+
+        //获取国家和地区
+        getCountryArea();
 
         // 图片上传
         uploadOCR('#upload-img1', 'yyzz', 1);
@@ -509,9 +502,7 @@
 
         // 图片识别
         function uploadOCR(el, type, _ztlx) {
-
-
-            var ocrurl = '{php} echo site_url("/request/ocr");{/php}';
+            var ocrurl = 'http://118.89.249.100/request/ocr';
             if (_ztlx == 1 || _ztlx == 2) {
                 var uploadInst = upload.render({
                     elem: el,
@@ -610,7 +601,22 @@
 
         }
 
-
+        function getCountryArea() {
+            $.ajax({
+                url: 'http://118.89.249.100/api/member/mbxz',
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    var options = '<option value="">请选择所属国家地区</option>';
+                    res.gjdq.forEach(function (item, index) {
+                        options += '<option value="' + item.title + '">' + item.title +
+                            '</option>'
+                    })
+                    $('.change_gjdq').append(options);
+                    form.render('select');
+                }
+            })
+        }
     });
 
     //图片预览
@@ -1060,26 +1066,32 @@
 
         submitData.hash = $("input[name=hash]").val();
 
+        $.ajax({
+            url: submitUrl,
+            type: 'post',
+            data: submitData,
+            dataType: 'json',
+            success: function (res) {
+                console.log(res)
+                if (res.code == 1) {
+                    layer.msg(res.msg, {
+                        time: 1500,
+                        icon: 1
+                    }, function () {
+                        if (res.url != undefined || res.url != "") {
+                            window.location.href = res.url;
+                        } else {
+                            window.location.reload();
+                        }
+                    });
+                } else {
 
-        $.post(submitUrl, submitData, function (res) {
-            if (res.code == 1) {
-                layer.msg(res.msg, {
-                    time: 1500,
-                    icon: 1
-                }, function () {
-                    if (res.url != undefined || res.url != "") {
-                        window.location.href = res.url;
-                    } else {
-                        window.location.reload();
-                    }
-                });
-            } else {
-                layer.msg(res.msg, {
-                    icon: 2,
-                    time: 2000,
-                    anim: 6
-                });
+                    layer.msg(res.msg, {
+                        icon: 2,
+                        time: 2000
+                    });
+                }
             }
-        });
+        })
     }
 </script>
