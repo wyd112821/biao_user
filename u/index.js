@@ -244,7 +244,7 @@ layui.extend({
             $(parent.document).find(".layui-header .layui-search").css({
                 width: 33
             })
-            $(parent.document).find(".layui-header .layui-search span,.layui-header input").hide()
+            //$(parent.document).find(".layui-header .layui-search span,.layui-header input").hide()
         }
     });
     //监听Hash改变

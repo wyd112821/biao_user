@@ -22,7 +22,7 @@
         </div>
         <div class="header-nav-hover-line" style="display: none;"></div>
         <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-            <li class="layui-nav-item layui-hide-xs">
+            <li class="layui-nav-item">
                 <div class="nav-search">
                     <input type="text" placeholder="请输入搜索内容">
                     <i class="iconfont iconico_topnav_search"></i>
@@ -35,7 +35,11 @@
                 </div>
             </li>
             <li class="layui-nav-item layui-hide-xs">
-                <img src="./u/style/res/avator@2x.png" width="32" alt="">
+                <img src="./u/style/res/avator@2x.png" width="32">
+                <dl class="layui-nav-child">
+                    <dd><a lay-href="/info">修改信息</a></dd>
+                    <dd><a href="javascript:;">退出</a></dd>
+                </dl>
             </li>
         </ul>
     </div>
@@ -43,7 +47,7 @@
     <!-- 侧边菜单 -->
     <div class="layui-side layui-side-menu">
         <div class="layui-side-scroll">
-            <script type="text/html" template lay-url="./u/json/menu.js?v=112{{ layui.admin.v }}"
+            <script type="text/html" template lay-url="./u/json/menu.js?v=108{{ layui.admin.v }}"
                 lay-done="layui.element.render('nav', 'layadmin-system-side-menu');layui.admin.navdone();"
                 id="TPL_layout">
                 <div class="layui-logo">

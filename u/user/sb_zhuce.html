@@ -1,0 +1,346 @@
+<title>订单列表</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">订单管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">订单列表</a>
+    </strong>
+</div>
+
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><a>订单列表</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div class="layui-btn-container layui-search-table borderG layui-clear layui-inline-fl">
+                <form class="layui-form search-order-form" action="">
+                    <div class="layui-inline">
+                        <input type="checkbox" name="choose" lay-skin="primary" lay-filter="allChoose" id="allChoose">
+                        <button type="button" class="layui-btn" id="allPay">合并付款</button>
+                    </div>
+                    <div class="layui-inline search-sorts-wrap">
+                        <div class="search-sorts-inline">
+                            <select name="searchSort" lay-filter="search-sort">
+                                <option value="1">订单号</option>
+                                <option value="2">申请人名称</option>
+                                <option value="3">商标名称</option>
+                                <option value="4">商标类别</option>
+                            </select>
+                        </div>
+
+                        <div class="search-sorts-inline">
+                            <input name="ddh" placeholder="请输入订单号" class="layui-input search">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline search-xdsj-wrap">
+                        <label class="layui-form-label">下单时间：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="xdsj" placeholder="开始时间 - 结束时间">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button class="layui-btn" lay-submit lay-filter="search-order">搜索</button>
+                    </div>
+                </form>
+
+                <div class="register-sb-btn">
+                    <a class="layui-btn layui-btn-primary">注册新商标</a>
+                </div>
+            </div>
+
+            <table class="layui-hide" id="order-list-tabel" lay-filter="order-list-tabel"></table>
+        </div>
+    </div>
+</div>
+<!--商标信息模板-->
+<script id="sbxxTpl" type="text/html">
+    <div class="sbxx-wrap">
+        <div class="img">
+            <img src="{{ d.img }}">
+        </div>
+        <div class="text">
+            <h3 class="mc">文字商标：{{ d.mc }}</h3>
+            <p class="ddh">订单号：{{ d.ddh }}</p>
+            <p class="xdsj">下单时间：{{ d.xdsj }}</p>
+        </div>
+    </div>
+</script>
+<!--操作模板-->
+<script id="toolTpl" type="text/html">
+    <div class="tool-btns-wrap">
+        <button class="layui-btn layui-btn-primary" lay-event="del">关闭订单</button>
+        <button class="layui-btn" lay-event="pay">支付</button>
+    </div>
+</script>
+
+<!-- mock数据接口 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js"></script>
+<script>
+    layui.use(['table', 'form', 'laydate', 'laytpl', 'x'], function () {
+        var x = layui.x;
+        var table = layui.table,
+            $ = layui.jquery,
+            laydate = layui.laydate,
+            form = layui.form,
+            laytpl = layui.laytpl;
+
+
+        //mockmock数据-订单列表
+        var Random = Mock.Random;
+        Mock.mock('http:localhost:8001/order/p_order_list?page=1&limit=10&csrf_token=111', {
+            'count': 100,
+            'data|10': [{
+                'id|+1': 1,
+                'mc': '@ctitle(6)',
+                'img': Random.image('177x177'),
+                'ddh': '@string("upper", 5)' + '@integer(10000)',
+                'lx|1-2': 1,
+                'lx_msg|1': ['商标注册', '商标服务'],
+                'zt|0-5': 1,
+                'zt_msg|1': ['待付款', '已付款', '待退款', '已退款', '已关闭'],
+                'sort': '第16类：广告贸易（共10项）',
+                'sort_desc': '@cparagraph(3)',
+                'xdsj': '@date("yyyy-MM-dd HH:mm:ss")',
+                'qian': '@integer(0, 1000)'
+            }],
+            'code': 0,
+            'msg': '获取成功'
+        });
+        Mock.mock('http:localhost:8001/user_zh/del_xiaoxi', {
+            'code': 1,
+            'msg': '关闭成功'
+        });
+
+        //日期范围选择
+        laydate.render({
+            elem: '#xdsj',
+            range: true,
+            theme: '#E1251B'
+        });
+
+        var objList = {
+            'lx': {
+                title: '类型',
+                param: 'lx'
+            },
+            'zt': {
+                title: '状态',
+                param: 'zt'
+            }
+        }
+        var pageList = [{
+            id: 'lx',
+            title: '类型',
+            param: 'lx',
+            list: [{
+                '商标注册': 1
+            }, {
+                '商标服务': 2
+            }]
+        }, {
+            id: 'zt',
+            title: '状态',
+            param: 'zt',
+            list: [{
+                '待付款': 0
+            }, {
+                '已付款': 1
+            }, {
+                '待退款': 2
+            }, {
+                '已退款': 3
+            }, {
+                '已关闭': 4
+            }]
+        }];
+
+        layui.x.sortSelects(pageList)
+
+        //数据表格渲染
+        table.render({
+            elem: '#order-list-tabel',
+            url: 'http:localhost:8001/order/p_order_list',
+            cols: [
+                [{
+                    type: 'checkbox'
+                }, {
+                    field: 'lx_msg',
+                    width: 120,
+                    title: '<span class=\'sx lx\' data-id=\'lx\'>类型</span>'
+                }, {
+                    width: 520,
+                    title: '商标信息',
+                    templet: '#sbxxTpl',
+                    align: 'center'
+                }, {
+                    field: 'sort',
+                    title: '分类',
+                    align: 'center'
+                }, {
+                    field: 'qian',
+                    width: 150,
+                    title: '支付金额（元）',
+                    align: 'center',
+                    templet: function (d) {
+                        return '￥' + d.qian;
+                    }
+                }, {
+                    field: 'zt_msg',
+                    width: 120,
+                    title: '<span class=\'sx zt\' data-id=\'zt\'>状态</span>',
+                    align: 'center'
+                }, {
+                    width: 240,
+                    title: '操作',
+                    toolbar: '#toolTpl',
+                    align: 'center'
+                }]
+            ],
+            page: true,
+            done: function (res) {
+                console.log(res)
+            }
+        });
+
+        $(document).off('click', '.dropdown .layui-nav-child dd');
+        var sendData = {};
+        $(document).on('click', ".dropdown .layui-nav-child dd", function () {
+            var $id = $(this).parents(".dropdown").attr("id");
+            var $val = $(this).attr('data-value');
+            var $txt = $(this).text();
+            objList[$id].title = $txt;
+            if (Object.keys(sendData).length == 0) {
+                for (var i in objList) {
+                    sendData[objList[i].param] = '';
+                }
+            }
+            sendData[objList[$id].param] = $val;
+            table.reload('order-list-tabel', {
+                where: sendData
+            });
+        })
+
+        //搜索分类
+        var $searchInput = $('.search-sorts-inline .layui-input.search');
+        form.on('select(search-sort)', function (data) {
+            console.log(data.value);
+            switch (data.value) {
+                case '1':
+                    $searchInput.attr('placeholder', '请输入订单号').attr('name', 'ddh');
+                    break;
+                case '2':
+                    $searchInput.attr('placeholder', '请输入申请人名称').attr('name', 'sqr');
+                    break;
+                case '3':
+                    $searchInput.attr('placeholder', '请输入商标名称').attr('name', 'mc');
+                    break;
+                case '4':
+                    $searchInput.attr('placeholder', '请输入商标类别').attr('name', 'sort');
+                    break;
+            }
+        });
+
+        //搜索
+        form.on('submit(search-brand)', function (data) {
+            var data = data.field;
+            table.reload('order-list-tabel', {
+                where: {
+                    data
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监听行工具事件
+        table.on('tool(order-list-tabel)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') { //关闭订单
+                layer.confirm('<font color=red>确定关闭该条订单吗</font>', {
+                    title: "温馨提示",
+                    icon: 3
+                }, function (index) {
+                    layui.admin.req({
+                        type: 'POST',
+                        url: 'http:localhost:8001/user_zh/del_xiaoxi',
+                        data: {
+                            ids: data.id
+                        },
+                        success: function (res) {
+                            layer.close(index);
+                            if (res.code == 1) {
+                                obj.del();
+                                layer.msg(res.msg, {
+                                    time: 1000
+                                });
+                            } else if (res.code == -1) {
+                                layer.alert(res.msg, layui.x.layset())
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'pay') { //付款
+                layer.msg('付款')
+            }
+        });
+
+        //全选逻辑
+        form.on('checkbox(allChoose)', function (data) {
+            var child = $(".layui-form input[type=checkbox]");
+            child.each(function (index, item) {
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        })
+
+        var $allChoose = $('#allChoose');
+        var child = $(".layui-table td input[type=checkbox]");
+        table.on('checkbox(order-list-tabel)', function (obj) {
+            var checkoutNum = 0;
+            if (obj.type == 'all') {
+                if (obj.checked == true) {
+                    $allChoose.prop('checked', true)
+                } else {
+                    $allChoose.prop('checked', false)
+                }
+                form.render('checkbox');
+            } else if (obj.type == 'one') {
+                child = $(".layui-table td input[type=checkbox]");
+                child.each(function (index, item) {
+                    if (item.checked === true) {
+                        checkoutNum++
+                    }
+                });
+                if (checkoutNum == child.length) {
+                    $allChoose.prop('checked', true)
+                } else if (checkoutNum < child.length) {
+                    $allChoose.prop('checked', false)
+                }
+                form.render('checkbox');
+            }
+        });
+
+        //合并付款
+        $('#allPay').click(function () {
+            if (!$allChoose.prop('checked')) {
+                layer.msg('请全选')
+            } else {
+                layer.msg('合并付款逻辑')
+            }
+        })
+
+    })
+</script>

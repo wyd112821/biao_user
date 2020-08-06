@@ -1,0 +1,1085 @@
+<title>添加申请人</title>
+<div class="layadmin-pagetabs">
+    <strong class="on">
+        <a href="">个人中心</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="">模板管理</a>
+        <i class="iconfont iconico_leftnav_down_sel1"></i>
+        <a href="javascript:;">添加申请人</a>
+    </strong>
+</div>
+
+<div class="layui-fluid layui-card-bodyx">
+    <div class="layui-card">
+        <div class="layui-tab-content layui-card">
+            <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><a>添加申请人</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <!--申请主体信息-->
+            <div class="cont">
+                <div class="layui-tab mb-tab-wrapper" lay-filter="change_zt">
+                    <h3 class="label-name">申请主体类型</h3>
+                    <ul class="layui-tab-title">
+                        <li class="layui-this" data-lx="1">企业（大陆）</li>
+                        <li data-lx="2">个体（大陆）</li>
+                        <li data-lx="3">企业（港澳台/海外）</li>
+                        <li data-lx="4">个体（港澳台/海外）</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show" id="ztbox_1">
+                            <form action="" class="layui-form">
+                                <div class="main-form fl">
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">主体身份证明</div>
+                                        <div class="layui-input-inline">
+                                            <p class="tip"> <a href="" target="_blank"
+                                                    class="left btn bd_red ml-20 ">无营业执照？</a></p>
+                                            <div class="upload-wrapper w100 clearfix">
+                                                <div class="upload-item fl">
+                                                    <input type="hidden" name="ztpic" value="">
+                                                    <p>请上传营业执照<br>复印盖章件</p>
+                                                    <div class="pic ztpic"><img
+                                                            src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image1"></div>
+                                                    <button type="button" id="upload-img1"
+                                                        class="zt-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/comlicense.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <p class="hint ov">请按照要求上传扫描件，jpg格式、小于5M</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">邮政编码</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="postcode" autocomplete="off"
+                                                placeholder="请输入营业执照地址所属邮政编码（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人姓名</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="xm" autocomplete="off" placeholder="请输入联系人姓名（必填）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人电话</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="phone" value="{$member[phone]}"
+                                                autocomplete="off" placeholder="请输入联系人手机号（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人邮箱</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="email" autocomplete="off"
+                                                placeholder="请输入联系人邮箱（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人地址</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="addr" autocomplete="off" placeholder="请输入联系人地址（必填）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="zdsb-form fl">
+                                    <h3 class="title">自动识别</h3>
+                                    <p class="txt1">请上传清晰的营业执照，或个人身份证照片；系统识别以后，请再次确认信息，若识别有误请修改。</p>
+
+                                    <label>申请主体名称</label>
+                                    <input class="layui-input" name="ztname" type="text" placeholder="请与营业执照的企业名称保持一致">
+                                    <label>证件地址</label>
+                                    <input class="layui-input" name="ztdz" type="text" placeholder="请填写营业执照地址">
+                                    <p class="txt2">若不含省、市（县）请补足，以免不予受理</p>
+                                    <label>社会代码</label>
+                                    <input class="layui-input" name="ztbh" type="text" placeholder="请与营业执照社会代码号保持一致">
+                                </div>
+                                <div class="clear"></div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" id="ztbox_2">
+                            <form action="" class="layui-form">
+                                <div class="main-form fl">
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">主体身份证明</div>
+                                        <div class="layui-input-inline">
+                                            <p class="tip"> <a href="" target="_blank"
+                                                    class="left btn bd_red ml-20 ">无营业执照？</a></p>
+                                            <div class="upload-wrapper">
+                                                <div class="upload-item fl">
+                                                    <input type="hidden" name="ztpic" value="">
+                                                    <p>请上传营业执照<br>复印件签字</p>
+                                                    <div class="pic ztpic"><img
+                                                            src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image2"></div>
+                                                    <button type="button" id="upload-img2"
+                                                        class="zt-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/sliccense.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <div class="upload-wrapper">
+                                                <div class="upload-item fl">
+                                                    <input type="hidden" name="zmpic" value="">
+                                                    <p>请上传身份证<br>正反面复印件签字</p>
+                                                    <div class="pic zmpic"><img
+                                                            src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image3"></div>
+                                                    <button type="button" id="upload-img3"
+                                                        class="zm-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/identity.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <p class="hint ov">请按照要求上传扫描件，jpg格式、小于5M</p>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">邮政编码</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="postcode" autocomplete="off"
+                                                placeholder="请输入身份证地址所属邮政编码（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人姓名</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="xm" autocomplete="off" placeholder="请输入联系人姓名（必填）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人电话</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="phone" autocomplete="off"
+                                                placeholder="请输入联系人手机号（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人邮箱</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="email" autocomplete="off"
+                                                placeholder="请输入联系人邮箱（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">联系人地址</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="addr" autocomplete="off" placeholder="请输入联系人地址（必填）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="zdsb-form fl">
+                                    <h3 class="title">自动识别</h3>
+                                    <p class="txt1">请上传清晰的营业执照，或个人身份证照片；系统识别以后，请再次确认信息，若识别有误请修改。</p>
+
+                                    <label>申请主体名称</label>
+                                    <input class="layui-input" name="ztname" type="text" placeholder="请与身份证上的姓名保持一致">
+                                    <label>证件地址</label>
+                                    <input class="layui-input" name="ztdz" type="text" placeholder="请填写身份证的地址">
+                                    <p class="txt2">若不含省、市（县）请补足，以免不予受理</p>
+                                    <label>身份证号</label>
+                                    <input class="layui-input" name="ztidno" type="text" placeholder="证件号码只支持数字/英文">
+                                    <label>社会代码</label>
+                                    <input class="layui-input" name="ztbh" type="text" placeholder="请与营业执照社会代码号保持一致">
+                                </div>
+                                <div class="clear"></div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" id="ztbox_3">
+                            <form action="" class="layui-form">
+                                <div class="main-form fl">
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">主体身份证明</div>
+                                        <div class="layui-input-inline">
+                                            <p class="tip"> <a href="" target="_blank"
+                                                    class="left btn bd_red ml-20 ">无营业执照？</a></p>
+                                            <div class="upload-wrapper">
+                                                <div class="upload-item fl">
+                                                    <input type="hidden" name="ztpic" value="">
+                                                    <p>请上传当地商事<br>登记证明盖章</p>
+                                                    <div class="pic ztpic"><img
+                                                            src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image4"></div>
+                                                    <button type="button" id="upload-img4"
+                                                        class="zt-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/comlicenseout1.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <div class="upload-wrapper">
+                                                <div class="upload-item fl">
+
+                                                    <input type="hidden" name="zmpic" value="">
+                                                    <p>请上传中英文<br>证明盖章</p>
+                                                    <div class="pic zmpic"><img
+                                                            src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image5"></div>
+                                                    <button type="button" id="upload-img5"
+                                                        class="zm-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/componout.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <p class="hint ov">请按照要求上传扫描件，jpg格式、小于5M</p>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆邮政编码</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="postcode" autocomplete="off"
+                                                placeholder="请输入大陆邮政编码（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系人姓名</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="xm" autocomplete="off" placeholder="请输入大陆联系人姓名（必填）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系手机号</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="phone" autocomplete="off"
+                                                placeholder="请输入大陆联系人手机号（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系人邮箱</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="email" autocomplete="off"
+                                                placeholder="请输入大陆联系人邮箱（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系人地址</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="addr" autocomplete="off"
+                                                placeholder="请输入大陆联系人地址（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="zdsb-form fl">
+                                    <h3 class="title">自动识别</h3>
+                                    <p class="txt1">请上传清晰的营业执照，或个人身份证照片；系统识别以后，请再次确认信息，若识别有误请修改。</p>
+
+                                    <label>申请主体名称</label>
+                                    <input class="layui-input" name="ztnameEn" type="text" placeholder="请填写企业的英文名称">
+                                    <input class="layui-input" name="ztname" type="text" placeholder="营业执照中文名称，必须为中文简体">
+                                    <label>申请主体所属国家地区</label>
+                                    <select name="gjdq" lay-filter="change_gjdq">
+                                        <option value="">请选择所属国家地区</option>
+                                        {loop:$gjdq $val}
+                                        <option value="{$val[" title"]}">{$val["title"]}({$val["tag"]})</option>
+                                        {/loop}
+                                    </select>
+                                    <label>证件地址</label>
+                                    <input class="layui-input" name="ztdzEn" type="text" placeholder="请输入营业执照对应的英文地址">
+                                    <input class="layui-input" name="ztdz" type="text" placeholder="营业执照中文地址，必须为中文简体">
+                                </div>
+                                <div class="clear"></div>
+                            </form>
+                        </div>
+
+                        <div class="layui-tab-item" id="ztbox_4">
+                            <form action="" class="layui-form">
+                                <div class="main-form fl">
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">主体身份证明</div>
+                                        <div class="layui-input-inline">
+                                            <p class="tip"> <a href="{$kfurl}" target="_blank"
+                                                    class="left btn bd_red ml-20 ">无营业执照？</a></p>
+                                            <div class="upload-wrapper">
+                                                <div class="upload-item fl">
+                                                    <input type="hidden" name="ztpic" value="">
+                                                    <p>请上传境外自然人<br>身份证明签字</p>
+                                                    <div class="pic"><img src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image6"></div>
+                                                    <button type="button" id="upload-img6"
+                                                        class="zt-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/sliccenseout.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <div class="upload-wrapper">
+                                                <div class="upload-item fl">
+                                                    <input type="hidden" name="zmpic" value="">
+                                                    <p>请上传中英文<br>证明签字</p>
+                                                    <div class="pic"><img src="/u/style/res/upload-img-default.png"
+                                                            id="upload-image7"></div>
+                                                    <button type="button" id="upload-img7"
+                                                        class="zm-upload">点击上传</button>
+                                                </div>
+                                                <div class="upload-example fl">
+                                                    <img src="/u/style/res/personout.jpg">
+                                                    <div class="mask"></div>
+                                                    <button type="button">点击放大</button>
+                                                </div>
+                                            </div>
+                                            <p class="hint ov">以下四种自然人证明任选一种复印件签字上传即可，jpg格式、小于5M</p>
+                                            <p class="hints ">
+                                                1、境外自然人护照复印件<br>
+                                                2、公安部门颁发的、有效期(一年以上)内的“外国人永久居留证”<br>
+                                                3、公安部门颁发的、有效期(一年以上)内的“外国人居留许可”<br>
+                                                4、公安部门颁发的、有效期(一年以上)内的“外国人居留证”
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆邮政编码</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="postcode" autocomplete="off"
+                                                placeholder="请输入大陆邮政编码（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系人姓名</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="xm" autocomplete="off" placeholder="请输入大陆联系人姓名（必填）"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系手机号</div>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="phone" autocomplete="off"
+                                                placeholder="请输入大陆联系人手机号（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系人邮箱</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="email" autocomplete="off"
+                                                placeholder="请输入大陆联系人邮箱（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">大陆联系人地址</div>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="addr" autocomplete="off"
+                                                placeholder="请输入大陆联系人地址（必填）" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="zdsb-form fl">
+                                    <h3 class="title">自动识别</h3>
+                                    <p class="txt1">请上传清晰的申请人中英文证明，系统识别后请再次核对信息并完善信息。</p>
+
+                                    <label>申请人名称</label>
+                                    <input class="layui-input" name="ztnameEn" type="text" placeholder="请填写申请人英文名称或拼音">
+                                    <input class="layui-input" name="ztname" type="text"
+                                        placeholder="请填写申请人中文名称，必须为中文简体">
+                                    <label>所属国家地区</label>
+                                    <select name="gjdq" lay-filter="change_gjdq">
+                                        <option value="">请选择所属国家地区</option>
+                                        {loop:$gjdq $val}
+                                        <option value="{$val[" title"]}">{$val["title"]}({$val["tag"]})</option>
+                                        {/loop}
+                                    </select>
+                                    <label>护照地址</label>
+                                    <input class="layui-input" name="ztdzEn" type="text" placeholder="请填写护照对应的英文地址">
+                                    <input class="layui-input" name="ztdz" type="text" placeholder="护照的中文地址，必须为中文简体">
+                                    <label>证件号码</label>
+                                    <input class="layui-input" name="ztbh" type="text" placeholder="请填写护照号码">
+                                </div>
+                                <div class="clear"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--申请主体信息-->
+            <div class="layui-form main-form">
+                <div class="layui-form-item" style="margin-top: 20px;">
+                    <div class="layui-form-label"></div>
+                    <div class="layui-input-block mt50">
+                        <button class="layui-btn f-w310" onclick="checksubmit();">立即提交</button>
+                    </div>
+                </div>
+                <input type="hidden" id="ztlx" name="ztlx" value="1">
+                <!-- <input type="hidden" name="hash" value="" id="hash" /> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/u/controller/jquery.min.js"></script>
+<script src="/u/controller/jquery.imgbox.js"></script>
+<script>
+    layui.use(['form', 'element', 'upload'], function () {
+        var form = layui.form,
+            element = layui.element,
+            upload = layui.upload;
+
+        //切换Tab 更新主体类型
+        element.on('tab(change_zt)', function (data) {
+            var ztlx = $(this).data("lx");
+            $("#ztlx").val(ztlx);
+        });
+
+        // 图片上传
+        uploadOCR('#upload-img1', 'yyzz', 1);
+        uploadOCR('#upload-img2', 'yyzz', 2);
+        uploadOCR('#upload-img3', 'sfz', 2);
+        uploadImg('#upload-img4', 3);
+        uploadImg('#upload-img5', 3);
+        uploadImg('#upload-img6', 4);
+        uploadImg('#upload-img7', 4);
+        uploadImg('#upload-img8', 8);
+        uploadImg('#upload-img9', 8);
+
+        // 样列放大展示 layui自带的
+        $('.upload-example').on('click', function () {
+            var src = $(this).find('img').attr('src');
+
+            if (src) {
+                preview_image(src);
+            }
+        });
+
+        $('.pic').on('click', "img", function () {
+            var src = $(this).attr("src");
+            if (src.indexOf("default.png") > 0 || src.indexOf("empty3.png") > 0) {
+                src = "";
+            }
+
+            if (src) {
+                preview_image(src);
+
+            }
+
+        });
+        // 图片上传
+        function uploadImg(el, lx) {
+            var uploadInst = upload.render({
+                elem: el,
+                auto: false,
+                choose: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        $(el).parent().find("input[type=hidden]").val(result);
+                        $(el).parent().find("img").attr('src', result); //图片链接（base64）
+                    });
+                }
+            });
+        }
+
+
+        // 图片识别
+        function uploadOCR(el, type, _ztlx) {
+
+
+            var ocrurl = '{php} echo site_url("/request/ocr");{/php}';
+            if (_ztlx == 1 || _ztlx == 2) {
+                var uploadInst = upload.render({
+                    elem: el,
+                    url: ocrurl,
+                    data: {
+                        type: type
+                    },
+                    choose: function (obj) {
+                        obj.preview(function (index, file, result) {
+
+                            $(el).parent().find("input[type=hidden]").val(result);
+                            $(el).parent().find("img").attr('src', result); //图片链接（base64）
+                        });
+                    },
+                    done: function (res) {
+
+                        if (res.code == 1) {
+                            if (res.code == 1) {
+                                if (type == "yyzz" && res.words_result_num > 0) {
+                                    var words_result = res.words_result;
+                                    for (var name in words_result) {
+                                        var ocr_val = words_result[name].words;
+                                        switch (name) {
+                                            case "单位名称":
+                                                $("#ztbox_" + _ztlx).find("input[name=ztname]").val(
+                                                    ocr_val);
+                                                break;
+                                            case "地址":
+                                                $("#ztbox_" + _ztlx).find("input[name=ztdz]").val(
+                                                    ocr_val);
+                                                $("#ztbox_" + _ztlx).find("input[name=addr]").val(
+                                                    ocr_val);
+                                                break;
+                                            case "邮编":
+                                                $("#ztbox_" + _ztlx).find("input[name=postcode]")
+                                                    .val(ocr_val);
+                                                break;
+                                            case "法人":
+                                                $("#ztbox_" + _ztlx).find("input[name=xm]").val(
+                                                    ocr_val);
+                                                break;
+                                            case "社会信用代码":
+                                                $("#ztbox_" + _ztlx).find("input[name=ztbh]").val(
+                                                    ocr_val);
+                                                break;
+                                            default:
+
+                                        }
+                                    }
+
+                                } else if (type == "sfz" && res.words_result_num > 0) {
+                                    var words_result = res.words_result;
+                                    for (var name in words_result) {
+                                        var ocr_val = words_result[name].words;
+                                        switch (name) {
+                                            case "姓名":
+                                                $("#ztbox_" + _ztlx).find("input[name=ztname]").val(
+                                                    ocr_val);
+                                                $("#ztbox_" + _ztlx).find("input[name=xm]").val(
+                                                    ocr_val);
+                                                break;
+                                            case "住址":
+                                                $("#ztbox_" + _ztlx).find("input[name=ztdz]").val(
+                                                    ocr_val);
+                                                $("#ztbox_" + _ztlx).find("input[name=addr]").val(
+                                                    ocr_val);
+                                                get_post_code($("#ztbox_" + _ztlx).find(
+                                                    "input[name=postcode]"), ocr_val);
+                                                break;
+                                            case "邮编":
+                                                $("#ztbox_" + _ztlx).find("input[name=postcode]")
+                                                    .val(ocr_val);
+                                                break;
+                                            case "公民身份号码":
+                                                $("#ztbox_" + _ztlx).find("input[name=ztidno]").val(
+                                                    ocr_val);
+                                                break;
+                                            default:
+
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        } else {
+                            layer.alert(res.msg, {
+                                time: 2000,
+                                icon: 2
+                            });
+                        }
+
+                    }
+                });
+            }
+
+        }
+
+
+    });
+
+    //图片预览
+    function preview_image(src) {
+        var mwidth, mheight;
+
+        var _width = $(window).width();
+        var _height = $(window).height();
+        var maxWidth = 1600;
+        var maxHeight = 900;
+        var wscale = 1,
+            hscale = 1;
+        var offsetW = 0,
+            offsetH = 0;
+        var newimg = new Image();
+
+        newimg.src = src;
+
+        if (newimg.complete) {
+
+            mwidth = newimg.width;
+            mheight = newimg.height;
+
+            maxHeight = maxHeight > _height ? (_height - 50) : maxHeight;
+            maxWidth = maxWidth > _width ? (_width - 50) : maxWidth;
+
+            wscale = mwidth / maxWidth;
+            hscale = mheight / maxHeight;
+            if (wscale > 1 && wscale > hscale) {
+                mheight = mheight * (maxWidth / mwidth);
+                mwidth = maxWidth;
+
+            } else if (hscale > 1 && wscale < hscale) {
+                mwidth = mwidth * (maxHeight / mheight);
+                mheight = maxHeight;
+            }
+            offsetW = (_width - mwidth) / 2;
+            offsetH = (_height - mheight) / 2;
+
+            layer.open({
+                title: false,
+                btn: false,
+                shadeClose: true,
+                closeBtn: 0,
+                offset: [offsetH, offsetW],
+                area: [mwidth + "px", mheight + "px"],
+                content: '<img src="' + src + '" height="100%">'
+            });
+
+        } else {
+
+            newimg.onload = function () {
+
+                mwidth = newimg.width;
+                mheight = newimg.height;
+
+                maxHeight = maxHeight > _height ? (_height - 50) : maxHeight;
+                maxWidth = maxWidth > _width ? (_width - 50) : maxWidth;
+
+                wscale = mwidth / maxWidth;
+                hscale = mheight / maxHeight;
+                if (wscale > 1 && wscale > hscale) {
+                    mheight = mheight * (maxWidth / mwidth);
+                    mwidth = maxWidth;
+
+                } else if (hscale > 1 && wscale < hscale) {
+                    mwidth = mwidth * (maxHeight / mheight);
+                    mheight = maxHeight;
+                }
+                offsetW = (_width - mwidth) / 2;
+                offsetH = (_height - mheight) / 2;
+
+                layer.open({
+                    title: false,
+                    btn: false,
+                    shadeClose: true,
+                    closeBtn: 0,
+                    offset: [offsetH, offsetW],
+                    area: [mwidth + "px", mheight + "px"],
+                    content: '<img src="' + src + '" height="100%">'
+                });
+            };
+        }
+
+    }
+
+
+    function checksubmit() {
+        var submitUrl = 'http://118.89.249.100/member/mymb_xz';
+        var submitData = {
+            zt: {},
+            hash: ''
+        };
+        var ztlx = $("#ztlx").val();
+
+        if (ztlx == "" || ztlx == undefined) {
+            layer.alert("对不起，请您选择申请主体类型", {
+                time: 2000,
+                icon: 2
+            });
+            return false;
+        }
+        var _ztform = $("#ztbox_" + ztlx);
+        if (_ztform.length == 0) {
+            layer.alert("对不起，请您选择申请主体", {
+                time: 2000,
+                icon: 2
+            });
+            return false;
+        }
+
+
+        submitData.zt['lx'] = ztlx;
+
+        if (ztlx == 1) {
+            if (_ztform.find("input[name=ztpic]").val() == "") {
+                layer.alert("对不起，请您上传申请主体营业执照！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztpic]").focus();
+                return false;
+            } else {
+                submitData.zt['zjpic'] = _ztform.find("input[name=ztpic]").val();
+            }
+            if (_ztform.find("input[name=ztname]").val() == "") {
+                layer.alert("对不起，请您填写申请企业名称！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztname]").focus();
+                return false;
+            } else {
+                submitData.zt['name'] = _ztform.find("input[name=ztname]").val();
+            }
+            if (_ztform.find("input[name=ztdz]").val() == "") {
+                layer.alert("对不起，请您填写申请企业注册地址", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztdz]").focus();
+                return false;
+            } else {
+                submitData.zt['zjdz'] = _ztform.find("input[name=ztdz]").val();
+            }
+            if (_ztform.find("input[name=ztbh]").val() == "") {
+                layer.alert("对不起，请您填写申请企业社会代码", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztbh]").focus();
+                return false;
+            } else {
+                submitData.zt['zjbh'] = _ztform.find("input[name=ztbh]").val();
+            }
+        } else if (ztlx == 2) {
+            if (_ztform.find("input[name=ztpic]").val() == "") {
+                layer.alert("对不起，请您上传申请人营业执照！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztpic]").focus();
+                return false;
+            } else {
+                submitData.zt['zjpic'] = _ztform.find("input[name=ztpic]").val();
+            }
+
+            if (_ztform.find("input[name=zmpic]").val() == "") {
+                layer.alert("对不起，请您上传申请人身份证！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=zmpic]").focus();
+                return false;
+            } else {
+                submitData.zt['idpic'] = _ztform.find("input[name=zmpic]").val();
+            }
+            if (_ztform.find("input[name=ztname]").val() == "") {
+                layer.alert("对不起，请您填写申请人姓名", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztname]").focus();
+                return false;
+            } else {
+                submitData.zt['name'] = _ztform.find("input[name=ztname]").val();
+            }
+            if (_ztform.find("input[name=ztdz]").val() == "") {
+                layer.alert("对不起，请您填写申请人身份证地址", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztdz]").focus();
+                return false;
+            } else {
+                submitData.zt['zjdz'] = _ztform.find("input[name=ztdz]").val();
+            }
+            if (_ztform.find("input[name=ztidno]").val() == "") {
+                layer.alert("对不起，请您填写申请人身份证编号", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztidno]").focus();
+                return false;
+            } else {
+                submitData.zt['idno'] = _ztform.find("input[name=ztidno]").val();
+            }
+            if (_ztform.find("input[name=ztbh]").val() == "") {
+                layer.alert("对不起，请您填写申请人社会代码", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztbh]").focus();
+                return false;
+            } else {
+                submitData.zt['zjbh'] = _ztform.find("input[name=ztbh]").val();
+            }
+        } else if (ztlx == 3) {
+            if (_ztform.find("input[name=ztpic]").val() == "") {
+                layer.alert("对不起，请您上传申请企业商事证明文件！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztpic]").focus();
+                return false;
+            } else {
+                submitData.zt['zjpic'] = _ztform.find("input[name=ztpic]").val();
+            }
+
+            if (_ztform.find("input[name=zmpic]").val() == "") {
+                layer.alert("对不起，请您上传申请企业中英文证明文件！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=zmpic]").focus();
+                return false;
+            } else {
+                submitData.zt['idpic'] = _ztform.find("input[name=zmpic]").val();
+            }
+            if (_ztform.find("input[name=ztnameEn]").val() == "") {
+                layer.alert("对不起，请您填写申请企业英文名称", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztnameEn]").focus();
+                return false;
+            } else {
+                submitData.zt['ename'] = _ztform.find("input[name=ztnameEn]").val();
+            }
+            if (_ztform.find("input[name=ztname]").val() == "") {
+                layer.alert("对不起，请您填写申请企业中文名称", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztname]").focus();
+                return false;
+            } else {
+                submitData.zt['name'] = _ztform.find("input[name=ztname]").val();
+            }
+
+
+
+            if (_ztform.find("select[name=gjdq]").val() == "") {
+                layer.alert("对不起，请您选择申请企业所属国家或地区", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("select[name=gjdq]").focus();
+                return false;
+            } else {
+                submitData.zt['gjdq'] = _ztform.find("select[name=gjdq]").val();
+            }
+
+            if (_ztform.find("input[name=ztdzEn]").val() == "") {
+                layer.alert("对不起，请您填写申请企业英文地址", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztdzEn]").focus();
+                return false;
+            } else {
+                submitData.zt['ezjdz'] = _ztform.find("input[name=ztdzEn]").val();
+            }
+            if (_ztform.find("input[name=ztdz]").val() == "") {
+                layer.alert("对不起，请您填写申请企业中文地址", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztdz]").focus();
+                return false;
+            } else {
+                submitData.zt['zjdz'] = _ztform.find("input[name=ztdz]").val();
+            }
+
+        } else if (ztlx == 4) {
+            if (_ztform.find("input[name=ztpic]").val() == "") {
+                layer.alert("对不起，请您上传申请人身份证明文件！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztpic]").focus();
+                return false;
+            } else {
+                submitData.zt['zjpic'] = _ztform.find("input[name=ztpic]").val();
+            }
+
+            if (_ztform.find("input[name=zmpic]").val() == "") {
+                layer.alert("对不起，请您上传申请人中英文证明文件！", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=zmpic]").focus();
+                return false;
+            } else {
+                submitData.zt['idpic'] = _ztform.find("input[name=zmpic]").val();
+            }
+
+            if (_ztform.find("input[name=ztnameEn]").val() == "") {
+                layer.alert("对不起，请您填写申请人中文名称", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztnameEn]").focus();
+                return false;
+            } else {
+                submitData.zt['ename'] = _ztform.find("input[name=ztnameEn]").val();
+            }
+            if (_ztform.find("input[name=ztname]").val() == "") {
+                layer.alert("对不起，请您填写申请人中文名称", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztname]").focus();
+                return false;
+            } else {
+                submitData.zt['name'] = _ztform.find("input[name=ztname]").val();
+            }
+
+            if (_ztform.find("select[name=gjdq]").val() == "") {
+                layer.alert("对不起，请您选择申请人所属国家或地区", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("select[name=gjdq]").focus();
+                return false;
+            } else {
+                submitData.zt['gjdq'] = _ztform.find("select[name=gjdq]").val();
+            }
+
+            if (_ztform.find("input[name=ztdzEn]").val() == "") {
+                layer.alert("对不起，请您填写申请人英文地址", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztdzEn]").focus();
+                return false;
+            } else {
+                submitData.zt['ezjdz'] = _ztform.find("input[name=ztdzEn]").val();
+            }
+            if (_ztform.find("input[name=ztdz]").val() == "") {
+                layer.alert("对不起，请您填写申请人中文地址", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztdz]").focus();
+                return false;
+            } else {
+                submitData.zt['zjdz'] = _ztform.find("input[name=ztdz]").val();
+            }
+
+            if (_ztform.find("input[name=ztbh]").val() == "") {
+                layer.alert("对不起，请您填写申请人证件编号", {
+                    time: 2000,
+                    icon: 2
+                });
+                _ztform.find("input[name=ztbh]").focus();
+                return false;
+            } else {
+                submitData.zt['zjbh'] = _ztform.find("input[name=ztbh]").val();
+            }
+        }
+
+        if (_ztform.find("input[name=xm]").val() == "") {
+            layer.alert("对不起，请您填写申请主体联系人姓名", {
+                time: 2000,
+                icon: 2
+            });
+            _ztform.find("input[name=xm]").focus();
+            return false;
+        } else {
+            submitData.zt['idname'] = _ztform.find("input[name=xm]").val();
+        }
+
+        if (_ztform.find("input[name=phone]").val() == "") {
+            layer.alert("对不起，请您填写申请主体联系人手机号码", {
+                time: 2000,
+                icon: 2
+            });
+            _ztform.find("input[name=phone]").focus();
+            return false;
+        } else {
+            submitData.zt['phone'] = _ztform.find("input[name=phone]").val();
+        }
+
+        if (_ztform.find("input[name=email]").val() == "") {
+            layer.alert("对不起，请您填写申请主体联系人电子邮箱", {
+                time: 2000,
+                icon: 2
+            });
+            _ztform.find("input[name=email]").focus();
+            return false;
+        } else {
+            submitData.zt['email'] = _ztform.find("input[name=email]").val();
+        }
+        if (_ztform.find("input[name=addr]").val() == "") {
+            layer.alert("对不起，请您填写申请主体联系人地址", {
+                time: 2000,
+                icon: 2
+            });
+            _ztform.find("input[name=addr]").focus();
+            return false;
+        } else {
+            submitData.zt['addr'] = _ztform.find("input[name=addr]").val();
+        }
+
+        if (_ztform.find("input[name=postcode]").val() == "") {
+            layer.alert("对不起，请您填写申请主体邮政编码", {
+                time: 2000,
+                icon: 2
+            });
+            _ztform.find("input[name=postcode]").focus();
+            return false;
+        } else {
+            submitData.zt['zjzip'] = _ztform.find("input[name=postcode]").val();
+        }
+
+
+        if ($("input[name=hash]").val() == "") {
+            layer.alert("对不起，您请求的参数错误！", {
+                time: 2000,
+                icon: 2
+            });
+            return false;
+        }
+
+
+
+        submitData.hash = $("input[name=hash]").val();
+
+
+        $.post(submitUrl, submitData, function (res) {
+            if (res.code == 1) {
+                layer.msg(res.msg, {
+                    time: 1500,
+                    icon: 1
+                }, function () {
+                    if (res.url != undefined || res.url != "") {
+                        window.location.href = res.url;
+                    } else {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                layer.msg(res.msg, {
+                    icon: 2,
+                    time: 2000,
+                    anim: 6
+                });
+            }
+        });
+    }
+</script>
