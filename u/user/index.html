@@ -17,12 +17,11 @@
                                     <img class="fl" src="./u/style/res/avator@2x.png" width="52" alt="">
                                     <div class="fl">
                                         <p>账户名称：18956012342@163.com</p>
-                                        <p>安全级别：<span>高</span></p>
+                                        <p>账户ID：1212</p>
                                     </div>
                                 </div>
                                 <div class="fr">
-                                    <a class="layui-btn btn-danger fl" href="">完善资料</a>
-                                    <a href="">修改密码</a>
+                                    <a class="layui-btn btn-danger fl" lay-href="/info">完善资料</a>
                                 </div>
                             </div>
                         </div>
@@ -206,12 +205,12 @@
             </div>
             <div class="layui-row layui-col-space14">
                 <div class="layui-col-lg12">
-            <div class="layui-card">
-                <div class="layui-card-header"><i class="iconfont icontuijian"></i><span>热门推荐</span></div>
-                <div class="layui-card-body">
-                    <img src="./u/style/res/banner@2x.png" style="width: 100%" alt="">
-                </div>
-            </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header"><i class="iconfont icontuijian"></i><span>热门推荐</span></div>
+                        <div class="layui-card-body">
+                            <img src="./u/style/res/banner@2x.png" style="width: 100%" alt="">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,14 +230,17 @@
 </style>
 
 <script>
-
     layui.use(['form', 'laytpl', 'element', 'x'], function () {
-        var form = layui.form, laytpl = layui.laytpl, $ = layui.$, x = layui.x
+        var form = layui.form,
+            laytpl = layui.laytpl,
+            $ = layui.$,
+            x = layui.x
         form.render();
         if (!x.check()) {
-            $(".layui-header .layui-nav .layui-nav-item a:not(#logout),.common-topbar-nav-list li.nav-item").css({
-                "padding": "0 5.5px"
-            })
+            $(".layui-header .layui-nav .layui-nav-item a:not(#logout),.common-topbar-nav-list li.nav-item")
+                .css({
+                    "padding": "0 5.5px"
+                })
         }
 
 

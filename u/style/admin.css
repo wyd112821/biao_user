@@ -2640,7 +2640,7 @@ html {
 .acount-info p {
     line-height: 26px;
     color: #666;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .acount-info p:first-child {
@@ -2662,12 +2662,6 @@ html {
 
 .acount-info .fr {
     margin-top: 13px;
-}
-
-.acount-info a:last-child {
-    color: #666;
-    font-size: 14px;
-    transition: .3s;
 }
 
 .layui-card-header i {
@@ -2716,8 +2710,7 @@ html {
     display: block;
 }
 
-.daiban li a:hover span,
-.acount-info a:last-child:hover {
+.daiban li a:hover span {
     color: #E1251B
 }
 

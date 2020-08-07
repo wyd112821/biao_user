@@ -5,7 +5,15 @@
         <i class="iconfont iconico_leftnav_down_sel1"></i>
         <a href="">模板管理</a>
         <i class="iconfont iconico_leftnav_down_sel1"></i>
-        <a href="javascript:;">添加申请人</a>
+        <a href="javascript:;">
+            <script template type="text/html">
+                {{# if(layui.router().search.id){ }}
+                修改申请人
+                {{# }else{ }}
+                添加申请人
+                {{# } }}
+            </script>
+        </a>
     </strong>
 </div>
 
@@ -14,7 +22,15 @@
         <div class="layui-tab-content layui-card">
             <div class="layui-tab" lay-filter="pl" lay-allowclose="true">
                 <ul class="layui-tab-title">
-                    <li class="layui-this"><a>添加申请人</a></li>
+                    <li class="layui-this"><a>
+                            <script template type="text/html">
+                                {{# if(layui.router().search.id){ }}
+                                修改申请人
+                                {{# }else{ }}
+                                添加申请人
+                                {{# } }}
+                            </script>
+                        </a></li>
                 </ul>
             </div>
         </div>
@@ -1072,7 +1088,6 @@
             data: submitData,
             dataType: 'json',
             success: function (res) {
-                console.log(res)
                 if (res.code == 1) {
                     layer.msg(res.msg, {
                         time: 1500,

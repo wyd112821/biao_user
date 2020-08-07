@@ -2,21 +2,26 @@
     "code": 1,
     "msg": "",
     "data": [{
-        "title": "主页",
+        "title": "会员中心",
         "icon": "iconico_topnav_meun",
         "jump": "/"
     }, {
-        "name": "brand",
-        "title": "业务管理",
+        "name": "member",
+        "title": "订单管理",
         "icon": "iconico_leftnav_dingdan",
         "list": [{
+            "name": "member",
+            "title": "订单列表",
+            "jump": "/order_list"
+        }]
+    }, {
+        "name": "brand",
+        "title": "商标管理",
+        "icon": "iconico_leftnav_set",
+        "list": [{
             "name": "brand",
-            "title": "商标注册",
-            "jump": "sb_zhuce"
-        }, {
-            "name": "brand",
-            "title": "商标服务",
-            "jump": "sb_fuwu"
+            "title": "我的商标",
+            "jump": "/brand_list"
         }]
     }, {
         "name": "finance",
