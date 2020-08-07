@@ -214,7 +214,7 @@
 }
 
 .main-form {
-    width: 500px;
+    width: 100%;
 }
 
 .main-form .layui-form-label {
@@ -464,14 +464,15 @@
     width: 540px;
 }
 
-.main-form .tip .bd_red{
+.main-form .tip .bd_red {
     background-color: #E1251B;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
-input[type="number"]{
-  -moz-appearance: textfield;
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }

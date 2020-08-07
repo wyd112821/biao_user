@@ -110,20 +110,26 @@
                                                 class="layui-input">
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <div class="zdsb-form fl">
-                                    <h3 class="title">自动识别</h3>
-                                    <p class="txt1">请上传清晰的营业执照，或个人身份证照片；系统识别以后，请再次确认信息，若识别有误请修改。</p>
-
-                                    <label>申请主体名称</label>
-                                    <input class="layui-input" name="ztname" type="text" placeholder="请与营业执照的企业名称保持一致">
-                                    <label>证件地址</label>
-                                    <input class="layui-input" name="ztdz" type="text" placeholder="请填写营业执照地址">
-                                    <p class="txt2">若不含省、市（县）请补足，以免不予受理</p>
-                                    <label>社会代码</label>
-                                    <input class="layui-input" name="ztbh" type="text" placeholder="请与营业执照社会代码号保持一致">
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">申请主体名称</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztname" type="text"
+                                                placeholder="请与营业执照的企业名称保持一致">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">证件地址</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztdz" type="text" placeholder="请填写营业执照地址">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">社会代码</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztbh" type="text"
+                                                placeholder="请与营业执照社会代码号保持一致">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="clear"></div>
                             </form>
@@ -207,25 +213,34 @@
                                                 class="layui-input">
                                         </div>
                                     </div>
-
-
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">申请主体名称</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztname" type="text"
+                                                placeholder="请与身份证上的姓名保持一致">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">证件地址</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztdz" type="text" placeholder="请填写身份证的地址">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">身份证号</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztidno" type="text"
+                                                placeholder="证件号码只支持数字/英文">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">社会代码</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztbh" type="text"
+                                                placeholder="请与营业执照社会代码号保持一致">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="zdsb-form fl">
-                                    <h3 class="title">自动识别</h3>
-                                    <p class="txt1">请上传清晰的营业执照，或个人身份证照片；系统识别以后，请再次确认信息，若识别有误请修改。</p>
-
-                                    <label>申请主体名称</label>
-                                    <input class="layui-input" name="ztname" type="text" placeholder="请与身份证上的姓名保持一致">
-                                    <label>证件地址</label>
-                                    <input class="layui-input" name="ztdz" type="text" placeholder="请填写身份证的地址">
-                                    <p class="txt2">若不含省、市（县）请补足，以免不予受理</p>
-                                    <label>身份证号</label>
-                                    <input class="layui-input" name="ztidno" type="text" placeholder="证件号码只支持数字/英文">
-                                    <label>社会代码</label>
-                                    <input class="layui-input" name="ztbh" type="text" placeholder="请与营业执照社会代码号保持一致">
-                                </div>
-                                <div class="clear"></div>
                             </form>
                         </div>
 
@@ -308,24 +323,35 @@
                                                 placeholder="请输入大陆联系人地址（必填）" class="layui-input">
                                         </div>
                                     </div>
-
-
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">申请主体名称</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztnameEn" type="text"
+                                                placeholder="请填写企业的英文名称">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztname" type="text"
+                                                placeholder="营业执照中文名称，必须为中文简体">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">所属国家地区</div>
+                                        <div class="layui-input-inline">
+                                            <select name="gjdq" class="change_gjdq"></select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">证件地址</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztdzEn" type="text"
+                                                placeholder="请输入营业执照对应的英文地址">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztdz" type="text"
+                                                placeholder="营业执照中文地址，必须为中文简体">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="zdsb-form fl">
-                                    <h3 class="title">自动识别</h3>
-                                    <p class="txt1">请上传清晰的营业执照，或个人身份证照片；系统识别以后，请再次确认信息，若识别有误请修改。</p>
-
-                                    <label>申请主体名称</label>
-                                    <input class="layui-input" name="ztnameEn" type="text" placeholder="请填写企业的英文名称">
-                                    <input class="layui-input" name="ztname" type="text" placeholder="营业执照中文名称，必须为中文简体">
-                                    <label>申请主体所属国家地区</label>
-                                    <select name="gjdq" class="change_gjdq"></select>
-                                    <label>证件地址</label>
-                                    <input class="layui-input" name="ztdzEn" type="text" placeholder="请输入营业执照对应的英文地址">
-                                    <input class="layui-input" name="ztdz" type="text" placeholder="营业执照中文地址，必须为中文简体">
-                                </div>
-                                <div class="clear"></div>
                             </form>
                         </div>
 
@@ -334,7 +360,7 @@
                                 <div class="main-form fl">
                                     <div class="layui-form-item">
                                         <div class="layui-form-label">主体身份证明</div>
-                                        <div class="layui-input-inline">
+                                        <div class="layui-input-inline" style="width: 700px;">
                                             <p class="tip"> <a href="" target="_blank"
                                                     class="left btn bd_red ml-20 ">无营业执照？</a></p>
                                             <div class="upload-wrapper">
@@ -411,27 +437,41 @@
                                                 placeholder="请输入大陆联系人地址（必填）" class="layui-input">
                                         </div>
                                     </div>
-
-
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">申请人名称</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztnameEn" type="text"
+                                                placeholder="请填写申请人英文名称或拼音">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztname" type="text"
+                                                placeholder="请填写申请人中文名称，必须为中文简体">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">所属国家地区</div>
+                                        <div class="layui-input-inline">
+                                            <select name="gjdq" class="change_gjdq"></select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">护照地址</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztdzEn" type="text"
+                                                placeholder="请填写护照对应的英文地址">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztdz" type="text"
+                                                placeholder="护照的中文地址，必须为中文简体">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-label">证件号码</div>
+                                        <div class="layui-input-inline">
+                                            <input class="layui-input" name="ztbh" type="text" placeholder="请填写护照号码">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="zdsb-form fl">
-                                    <h3 class="title">自动识别</h3>
-                                    <p class="txt1">请上传清晰的申请人中英文证明，系统识别后请再次核对信息并完善信息。</p>
-
-                                    <label>申请人名称</label>
-                                    <input class="layui-input" name="ztnameEn" type="text" placeholder="请填写申请人英文名称或拼音">
-                                    <input class="layui-input" name="ztname" type="text"
-                                        placeholder="请填写申请人中文名称，必须为中文简体">
-                                    <label>所属国家地区</label>
-                                    <select name="gjdq" class="change_gjdq"></select>
-                                    <label>护照地址</label>
-                                    <input class="layui-input" name="ztdzEn" type="text" placeholder="请填写护照对应的英文地址">
-                                    <input class="layui-input" name="ztdz" type="text" placeholder="护照的中文地址，必须为中文简体">
-                                    <label>证件号码</label>
-                                    <input class="layui-input" name="ztbh" type="text" placeholder="请填写护照号码">
-                                </div>
-                                <div class="clear"></div>
                             </form>
                         </div>
                     </div>
